@@ -13,4 +13,4 @@
 * _X_ secondary lift
 * _LB + X_ reverse secondary lift
 * _B_ spin launcher
-* _Y_ spin launcher, once per press
+* _Y_ spin launcher, once per press 
