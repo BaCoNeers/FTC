@@ -66,7 +66,13 @@ public class Autonomoustest extends LinearOpMode {
         waitForStart();
         turn(90, Turn.LEFT);
         turn(90, Turn.RIGHT);
-        turn(180,Turn.RIGHT);
+        turn(90,Turn.LEFT);
+        turn(30, Turn.RIGHT);
+        turn(60, Turn.RIGHT);
+        turn(90,Turn.LEFT);
+        turn(150, Turn.RIGHT);
+        turn(100,Turn.LEFT);
+        turn(50,Turn.LEFT);
 
         Thread.sleep(2000);
 
@@ -75,7 +81,7 @@ public class Autonomoustest extends LinearOpMode {
     public float startAngle;
 
     public void turn(float degrestoturn, Turn direction) {
-        turn(degrestoturn, direction, 10);
+        turn(degrestoturn, direction, 5);
     }
 
     public void turn(float degrestoturn, Turn direction, float tolerance) {
@@ -124,11 +130,11 @@ public class Autonomoustest extends LinearOpMode {
 
             count++;
             if (diff < 0) {
-                motor1.setPower(0.21);
-                motor2.setPower(-0.21);
-            } else {
                 motor1.setPower(-0.21);
                 motor2.setPower(0.21);
+            } else {
+                motor1.setPower(0.21);
+                motor2.setPower(-0.21);
             }
 
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
