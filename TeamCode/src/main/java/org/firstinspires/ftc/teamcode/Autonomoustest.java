@@ -64,17 +64,12 @@ public class Autonomoustest extends LinearOpMode {
 
         telemetry.log().add("before wait for start");
         waitForStart();
-        turn(90, Turn.LEFT);
-        turn(90, Turn.RIGHT);
+        DriveForward(100);
         turn(90,Turn.LEFT);
-        turn(30, Turn.RIGHT);
-        turn(60, Turn.RIGHT);
         turn(90,Turn.LEFT);
-        turn(150, Turn.RIGHT);
-        turn(100,Turn.LEFT);
-        turn(50,Turn.LEFT);
-
-        Thread.sleep(2000);
+        DriveForward(100);
+        turn(90,Turn.LEFT);
+        turn(90,Turn.LEFT);
 
     }
 
@@ -85,7 +80,6 @@ public class Autonomoustest extends LinearOpMode {
     }
 
     public void turn(float degrestoturn, Turn direction, float tolerance) {
-        sleep(1000);
         telemetry.setAutoClear(false);
         Telemetry.Item angItem = telemetry.addData("angle", "%12.3f", 0.0);
         Telemetry.Item teltargetangle = telemetry.addData("target angle", "%12.3f", 0.0);
@@ -143,43 +137,39 @@ public class Autonomoustest extends LinearOpMode {
             angItem.setValue("%12.3f", heading);
 
         }
-        motor1.setPower(0);
-       motor2.setPower(0);
-//        if (direction == Turn.LEFT) {
-//
-//        }
-//
-//        if (degrestoturn < 0) {
-//            targetangle = heading + degrestoturn;
-//           if (targetangle < -180){
-//                targetangle += 180;
-//                targetangle = 180 + targetangle;
-//            }
-//            while (heading > targetangle + 10 && heading < targetangle - 10 ){
-//                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-//                heading = angles.firstAngle;
-//                angItem.setValue("%12.3f", heading);
-//
-//
-//        }}
-//            motor1.setPower(0);
-//            motor2.setPower(0);
-//
-//        if (degrestoturn < 0) {
-//            targetangle = heading + degrestoturn;
-//            if (targetangle > 180){
-//                targetangle -= 180;
-//                targetangle = -180 + targetangle;
-//            }
-//            while (heading > targetangle + 10 && heading < targetangle - 10 ){
-//                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-//                heading = angles.firstAngle;
-//                angItem.setValue("%12.3f", heading);
-//                motor1.setPower(-0.11);
-//                motor2.setPower(0.11);
-//            }}
+
             motor1.setPower(0);
             motor2.setPower(0);
+        }
+
+        public void DriveForward(int distance)
+        {
+            DriveForward(1, distance);
+        }
+
+        public void DriveForward(double power, int distance)
+        {
+            motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            motor1.setTargetPosition(distance);
+            motor2.setTargetPosition(distance);
+
+            motor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            motor1.setPower(power);
+            motor2.setPower(power);
+
+            while (motor1.isBusy()&& motor2.isBusy())
+            {
+
+            }
+            motor1.setPower(0);
+            motor2.setPower(0);
+
+            motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 
