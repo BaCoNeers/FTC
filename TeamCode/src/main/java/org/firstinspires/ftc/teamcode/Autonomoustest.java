@@ -56,7 +56,10 @@ public class Autonomoustest extends LinearOpMode {
         imu.initialize(parameters);
         motor1 = hardwareMap.dcMotor.get("driveRight");
         motor2 = hardwareMap.dcMotor.get("driveLeft");
+        motor1.resetDeviceConfigurationForOpMode();
+        motor2.resetDeviceConfigurationForOpMode();
         motor1.setDirection(DcMotorSimple.Direction.REVERSE);
+        motor2.setDirection(DcMotorSimple.Direction.FORWARD);
         motor1.setPower(0);
         motor2.setPower(0);
 
@@ -129,11 +132,11 @@ public class Autonomoustest extends LinearOpMode {
 
             count++;
             if (diff < 0) {
-                motor1.setPower(0.21);
-                motor2.setPower(-0.21);
-            } else {
                 motor1.setPower(-0.21);
                 motor2.setPower(0.21);
+            } else {
+                motor1.setPower(0.21);
+                motor2.setPower(-0.21);
             }
 
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -200,8 +203,8 @@ public class Autonomoustest extends LinearOpMode {
             motor1.setPower(0);
             motor2.setPower(0);
 
-            motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor1.setDirection(DcMotorSimple.Direction.REVERSE);
         }
     }
