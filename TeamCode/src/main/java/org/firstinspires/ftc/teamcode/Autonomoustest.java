@@ -62,15 +62,20 @@ public class Autonomoustest extends LinearOpMode {
 
         imu.startAccelerationIntegration(new Position(), new Velocity(), 10);
 
+
+        telemetry.log().add("current position 1 %d", motor1.getCurrentPosition());
+        telemetry.log().add("current position 2 %d", motor2.getCurrentPosition());
+
         telemetry.log().add("before wait for start");
         waitForStart();
-        DriveForward(100);
+        //DriveForward(0.5,5000);
         turn(90,Turn.LEFT);
         turn(90,Turn.LEFT);
-        DriveForward(100);
-        turn(90,Turn.LEFT);
-        turn(90,Turn.LEFT);
+        //DriveForward(0.5,5000);
+        turn(90,Turn.RIGHT);
+        turn(90,Turn.RIGHT);
 
+        Thread.sleep(3000);
     }
 
     public float startAngle;
@@ -124,11 +129,11 @@ public class Autonomoustest extends LinearOpMode {
 
             count++;
             if (diff < 0) {
-                motor1.setPower(-0.21);
-                motor2.setPower(0.21);
-            } else {
                 motor1.setPower(0.21);
                 motor2.setPower(-0.21);
+            } else {
+                motor1.setPower(-0.21);
+                motor2.setPower(0.21);
             }
 
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -149,27 +154,55 @@ public class Autonomoustest extends LinearOpMode {
 
         public void DriveForward(double power, int distance)
         {
+
+            boolean reachedmotor1 = false;
+            boolean reachedmotor2= false;
+
             motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            motor1.setTargetPosition(distance);
-            motor2.setTargetPosition(distance);
 
-            motor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+            motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             motor1.setPower(power);
             motor2.setPower(power);
 
-            while (motor1.isBusy()&& motor2.isBusy())
-            {
+
+            int loopcount = 0;
+
+            while (!reachedmotor1 && !reachedmotor2)
+                {
+                loopcount++;
+
+                telemetry.log().add("in loop %d",loopcount);
+                telemetry.log().add("current position 1 %d", motor1.getCurrentPosition());
+                telemetry.log().add("current position 2 %d", motor2.getCurrentPosition());
+
+
+
+
+                if (motor1.getCurrentPosition() > distance)
+                {
+                    motor1.setPower(0);
+                    reachedmotor1 = true;
+                }
+                if (motor2.getCurrentPosition() > distance)
+                {
+                    motor2.setPower(0);
+                    reachedmotor2 = true;
+                }
 
             }
             motor1.setPower(0);
             motor2.setPower(0);
 
-            motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motor1.setDirection(DcMotorSimple.Direction.REVERSE);
         }
     }
 

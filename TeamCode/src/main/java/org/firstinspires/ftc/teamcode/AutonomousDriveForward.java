@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -20,6 +21,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
  */
 
 @Autonomous(name = "Autonomoustest Forward")
+@Disabled
 public class AutonomousDriveForward extends LinearOpMode {
     // Declare drive motors
 
@@ -64,7 +66,7 @@ public class AutonomousDriveForward extends LinearOpMode {
 
         telemetry.log().add("before wait for start");
         waitForStart();
-        forward(400);
+        forward(50);
 
         Thread.sleep(2000);
 
