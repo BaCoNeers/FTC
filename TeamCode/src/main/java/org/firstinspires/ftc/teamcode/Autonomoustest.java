@@ -69,16 +69,14 @@ public class Autonomoustest extends LinearOpMode {
         telemetry.log().add("current position 1 %d", motor1.getCurrentPosition());
         telemetry.log().add("current position 2 %d", motor2.getCurrentPosition());
 
+
+
         telemetry.log().add("before wait for start");
         waitForStart();
-        //DriveForward(0.5,5000);
+        DriveForward(0.5,10000);
         turn(90,Turn.LEFT);
-        turn(90,Turn.LEFT);
-        //DriveForward(0.5,5000);
-        turn(90,Turn.RIGHT);
-        turn(90,Turn.RIGHT);
+        DriveForward(0.5,10000);
 
-        Thread.sleep(3000);
     }
 
     public float startAngle;
@@ -129,6 +127,9 @@ public class Autonomoustest extends LinearOpMode {
             telemetry.log().add("diff: %f", diff);
             telemetry.log().add("heading: %f", heading);
             telemetry.log().add("target: %f", targetangle);
+            telemetry.log().add("distance: %f" , degrestoturn);
+            if (direction == Turn.RIGHT)  telemetry.log().add("turn: right");
+            if (direction == Turn.LEFT) telemetry.log().add("turn: Left");
 
             count++;
             if (diff < 0) {
@@ -159,17 +160,19 @@ public class Autonomoustest extends LinearOpMode {
         {
 
             boolean reachedmotor1 = false;
-            boolean reachedmotor2= false;
+            boolean reachedmotor2 = false;
 
             motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
-            motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
             motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+            motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
             motor1.setPower(power);
             motor2.setPower(power);
@@ -177,26 +180,38 @@ public class Autonomoustest extends LinearOpMode {
 
             int loopcount = 0;
 
-            while (!reachedmotor1 && !reachedmotor2)
+            while (reachedmotor1 == false || reachedmotor2 == false)
                 {
                 loopcount++;
+
+
 
                 telemetry.log().add("in loop %d",loopcount);
                 telemetry.log().add("current position 1 %d", motor1.getCurrentPosition());
                 telemetry.log().add("current position 2 %d", motor2.getCurrentPosition());
+                telemetry.log().add("reached motor 1 : %b", reachedmotor1);
+                telemetry.log().add("reached motor 2 : %b", reachedmotor2);
+                    telemetry.log().add("distance %d", distance);
 
-
-
-
-                if (motor1.getCurrentPosition() > distance)
+                if (motor1.getCurrentPosition() >= distance)
                 {
+                    telemetry.log().add("motor2 > distance");
                     motor1.setPower(0);
                     reachedmotor1 = true;
                 }
+                if (motor1.getCurrentPosition() <= distance)
+                {
+                    telemetry.log().add("motor1 < distance");
+                }
                 if (motor2.getCurrentPosition() > distance)
                 {
+                    telemetry.log().add("motor2 > distance");
                     motor2.setPower(0);
                     reachedmotor2 = true;
+                }
+                if (motor2.getCurrentPosition() < distance)
+                {
+                    telemetry.log().add("motor2 < distance");
                 }
 
             }
@@ -205,6 +220,13 @@ public class Autonomoustest extends LinearOpMode {
 
             motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+            motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
             motor1.setDirection(DcMotorSimple.Direction.REVERSE);
         }
     }
