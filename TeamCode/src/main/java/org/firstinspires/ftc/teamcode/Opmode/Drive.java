@@ -32,8 +32,11 @@ package org.firstinspires.ftc.teamcode.Opmode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Configuration;
-import org.firstinspires.ftc.teamcode.Classes.JewelDrop;
+import org.firstinspires.ftc.teamcode.util.MovingAverage;
+import org.firstinspires.ftc.teamcode.util.MovingAverageTimer;
 
 /**
  * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
@@ -57,19 +60,32 @@ public class Drive extends LinearOpMode {
 
     /* Declare OpMode members. */
     private Configuration robot           = new Configuration();   // Use a Pushbot's hardware
-    private boolean toggle = false;
+
+    //tells me if either left trigger or right trigger as been pressed
     private boolean toMax = false;
     private boolean toMin = false;
-    private double divider = 1;
-    private double  Forward;
-    private double  Turning;
-    private double  oldTurning;
-    private double oldForward;
-    private boolean leftStickY;
-    private boolean rightStickX;
+
+    //Keep power for each motor
+    private double leftPower;
+    private double rightPower;
+
+    //Allows reduce power
+    private double divider;
+
+    //Keep the last button state for a toggel
+    private boolean lastButtonState = false;
+
+    //Creating instances
+    private MovingAverage leftAvarage = new MovingAverage(5);
+    private MovingAverage rightAvarage = new MovingAverage(5);
+    private MovingAverageTimer avg = new MovingAverageTimer();
     private JewelDrop jewel = new JewelDrop();
 
-
+    public double lurp(double a,double b,double z){
+        double number = 0;
+        number = a+(b-a)*z;
+        return number;
+    }
 
     @Override
     public void runOpMode() {
@@ -84,40 +100,75 @@ public class Drive extends LinearOpMode {
         telemetry.addData("Say", "Hello Driver");    //
         telemetry.update();
 
+        telemetry.setAutoClear(false);
+        Telemetry.Item avgItem = telemetry.addData("average" , "%12.3f", 0.0);
+        Telemetry.Item DriveLeft = telemetry.addData("Left drive" , "%12.3f", 0.0);
+        Telemetry.Item DriveRight = telemetry.addData("Right drive" , "%12.3f", 0.0);
+        Telemetry.Item DriveLeftAvg = telemetry.addData("Left drive avarage" , "%12.3f", 0.0);
+        Telemetry.Item DriveRightAvg = telemetry.addData("Right drive avarage" , "%12.3f", 0.0);
+
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-//        jewel.Jewel(true, robot);
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            telemetry.log().add("Left drive: %f",(gamepad1.left_stick_y*-1)+gamepad1.right_stick_x);
-            telemetry.log().add("Right drive: %f",(gamepad1.left_stick_y*-1)-gamepad1.right_stick_x);
 
+
+            avg.update();
+
+            avgItem.setValue("%12.3f",avg.average());
+            DriveLeft.setValue("%12.3f",leftPower);
+            DriveRight.setValue("%12.3f",rightPower);
+            DriveLeftAvg.setValue("%12.3f",leftAvarage.getMovingAverage());
+            DriveRightAvg.setValue("%12.3f",rightAvarage.getMovingAverage());
+
+            telemetry.update();
 
 
             //Drive
-            if (gamepad1.left_stick_y>0){
-                leftStickY = true;
+            double scalePower = (gamepad1.left_stick_y);
+            double steer = (gamepad1.right_stick_x);
+            if (scalePower == 0.0f) {
+                leftPower = steer;
+                rightPower = -steer;
             }
-            else{
-                leftStickY = false;
+            else {
+                leftPower = scalePower * ((steer < 0) ? 1.0f + steer : 1.0f);
+                rightPower = scalePower * ((steer > 0) ? 1.0f - steer : 1.0f);
             }
-            if(gamepad1.right_stick_x>0){
-                rightStickX = true;
+
+            boolean currentButtonState = gamepad1.x;
+            if(currentButtonState == false && lastButtonState == true){
+                divider = divider == 1? 0.1: 1;
             }
-            else{
-                rightStickX = false;
-            }
-            Forward = Math.max(Math.pow(gamepad1.left_stick_y,2),oldForward);
-            Turning = Math.max(Math.pow(gamepad1.right_stick_x,2),oldTurning);
-            if(!leftStickY){
-                Forward -=0.01;
-            }
-            if(!rightStickX){
-                Turning -=0.01;
-            }
-            robot.rightDrive.setPower(Forward+Turning);
-            robot.leftDrive.setPower(Forward-Turning);
+            lastButtonState = currentButtonState;
+
+
+
+            robot.leftDrive.setPower(leftAvarage.add(leftPower*divider));
+            robot.rightDrive.setPower(rightAvarage.add(rightPower*divider));
+
+
+
+//            if (gamepad1.left_stick_y>0){
+//                leftStickY = true;
+//            }
+//            else{
+//                leftStickY = false;
+//            }
+//            if(gamepad1.right_stick_x>0){
+//                rightStickX = true;
+//            }
+//            else{
+//                rightStickX = false;
+//            }
+//            Forward = Math.max(Math.pow(gamepad1.left_stick_y,2),oldForward);
+//            Turning = Math.max(Math.pow(gamepad1.right_stick_x,2),oldTurning);
+//
+//            robot.rightDrive.setPower(Forward+Turning);
+//            robot.leftDrive.setPower(Forward-Turning);
 
 
 
@@ -151,8 +202,8 @@ public class Drive extends LinearOpMode {
 
 
 
-//            //extendor
-           robot.extentionUp.setPower(gamepad2.left_stick_y*-1);
+            //extendor
+           robot.extentionUp.setPower(gamepad2.left_stick_y);
            robot.extentionCross.setPower(gamepad2.left_stick_x);
             if (gamepad1.dpad_left){
                 robot.picker.setPosition(0);
@@ -164,9 +215,7 @@ public class Drive extends LinearOpMode {
                 robot.picker.setPosition(0.5);
             }
 
-            // Drive
-            oldForward = Forward;
-            oldTurning = Turning;
+
         }
     }
 
