@@ -35,24 +35,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Configuration;
 import org.firstinspires.ftc.teamcode.Classes.JewelDrop;
 
-/**
- * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
- * All device access is managed through the HardwarePushbot class.
- * The code is structured as a LinearOpMode
- *
- * This particular OpMode executes a POV Game style Teleop for a PushBot
- * In this mode the left stick moves the robot FWD and back, the Right stick turns left and right.
- * It raises and lowers the claw using the Gampad Y and A buttons respectively.
- * It also opens and closes the claws slowly using the left and right Bumper buttons.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
-        */
-
-
-
-@TeleOp(name="drive", group="Pushbot")
-
 public class Drive extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -94,33 +76,10 @@ public class Drive extends LinearOpMode {
             telemetry.log().add("Right drive: %f",(gamepad1.left_stick_y*-1)-gamepad1.right_stick_x);
 
 
+            vec2 drive_bias = DriveController.GetDriveBias(gamepad1);
 
-            //Drive
-            if (gamepad1.left_stick_y>0){
-                leftStickY = true;
-            }
-            else{
-                leftStickY = false;
-            }
-            if(gamepad1.right_stick_x>0){
-                rightStickX = true;
-            }
-            else{
-                rightStickX = false;
-            }
-            Forward = Math.max(Math.pow(gamepad1.left_stick_y,2),oldForward);
-            Turning = Math.max(Math.pow(gamepad1.right_stick_x,2),oldTurning);
-            if(!leftStickY){
-                Forward -=0.01;
-            }
-            if(!rightStickX){
-                Turning -=0.01;
-            }
-            robot.rightDrive.setPower(Forward+Turning);
-            robot.leftDrive.setPower(Forward-Turning);
-
-
-
+            robot.rightDrive.setPower(0.1 * drive_bias.x);
+            robot.leftDrive.setPower(0.1 * drive_bias.y);
 
 
             //lift
