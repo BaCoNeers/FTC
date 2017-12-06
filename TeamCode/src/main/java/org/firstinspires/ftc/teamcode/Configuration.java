@@ -29,14 +29,14 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.firstinspires.ftc.teamcode.Classes.JewelDrop;
 
 /**
  * This is NOT an opmode.
@@ -70,10 +70,12 @@ public class Configuration
     public DcMotor    extentionUp   = null;
     public DcMotor    extentionCross  = null;
     public Servo    picker      = null;
+    public BNO055IMU imu = null;
+
 
 
     /* local OpMode members. */
-    HardwareMap hwMap           =  null;
+    HardwareMap hwMap =  null;
 
     /* Constructor */
     public Configuration(){
@@ -89,8 +91,7 @@ public class Configuration
         //Motor drive
         leftDrive  = hwMap.get(DcMotor.class, "leftdrive");
         rightDrive = hwMap.get(DcMotor.class, "rightdrive");
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+
 
         //lift
         xmotion = hwMap.get(DcMotor.class, "xmotion");
@@ -111,6 +112,16 @@ public class Configuration
         extentionCross = hwMap.get(DcMotor.class, "extensionCross");
         picker  = hwMap.get(Servo.class,"picker");
 
+        //imu
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        // parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        imu = hwMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
 
 
         // Set all motors to zero power
@@ -132,5 +143,5 @@ public class Configuration
 
 
     }
- }
+}
 
