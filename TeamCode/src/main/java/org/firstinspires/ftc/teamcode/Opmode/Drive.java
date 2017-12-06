@@ -76,8 +76,8 @@ public class Drive extends LinearOpMode {
     private boolean lastButtonState = false;
 
     //Creating instances
-    private MovingAverage leftAvarage = new MovingAverage(8);
-    private MovingAverage rightAvarage = new MovingAverage(8);
+    private MovingAverage leftAvarage = new MovingAverage(10);
+    private MovingAverage rightAvarage = new MovingAverage(10);
     private MovingAverageTimer avg = new MovingAverageTimer();
     
 
