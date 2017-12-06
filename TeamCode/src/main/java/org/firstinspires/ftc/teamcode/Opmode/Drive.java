@@ -76,10 +76,10 @@ public class Drive extends LinearOpMode {
     private boolean lastButtonState = false;
 
     //Creating instances
-    private MovingAverage leftAvarage = new MovingAverage(8);
-    private MovingAverage rightAvarage = new MovingAverage(8);
+    private MovingAverage leftAvarage = new MovingAverage(10);
+    private MovingAverage rightAvarage = new MovingAverage(10);
     private MovingAverageTimer avg = new MovingAverageTimer();
-    
+
 
     public double lurp(double a,double b,double z){
         double number = 0;
@@ -130,21 +130,27 @@ public class Drive extends LinearOpMode {
 
             //Drive
             //Scale power is forward movement
-            double scalePower = (gamepad1.right_stick_x*-1);
-            double steer = (gamepad1.left_stick_y*-1);
-            //If forward movement (scalePower) has no number, it will just use steer to move
-            if (scalePower == 0.0f) {
-                leftPower = steer;
-                rightPower = -steer;
-            }
-            //else
-            else {
-                leftPower = scalePower * ((steer < 0) ? 1.0f + steer : 1.0f);
-                rightPower = scalePower * ((steer > 0) ? 1.0f - steer : 1.0f);
-            }
+//            double scalePower = (gamepad1.right_stick_x*-1);
+//            double steer = (gamepad1.left_stick_y*-1);
+//            //If forward movement (scalePower) has no number, it will just use steer to move
+//            if (scalePower == 0.0f) {
+//                leftPower = steer;
+//                rightPower = -steer;
+//            }
+//            //else it will combine both steer and scalePower
+//            else {
+//                //(steer < 0) is like a if statment if its true
+//                // it will use 1.0f + steer else it will use 1.0f
+//                leftPower = scalePower * ((steer < 0) ? 1.0f + steer : 1.0f);
+//                rightPower = scalePower * ((steer > 0) ? 1.0f - steer : 1.0f);
+//            }
+            leftPower = gamepad1.left_stick_y*-1+gamepad1.right_stick_x*-1;
+            rightPower = gamepad1.left_stick_y+gamepad1.right_stick_x*-1;
 
+            //Keep track of gamepad1.x which is just the x button
             boolean currentButtonState = gamepad1.x;
-
+            //check if current button state is true and last button state is false
+            //so that it will only because true when you realise the button
             if (currentButtonState && !lastButtonState) {
                 if (divider == 1.0) {
                     divider = 0.3;
@@ -153,7 +159,7 @@ public class Drive extends LinearOpMode {
                     divider = 1.0;
                 }
             }
-
+            //If current button states changed then change last button state
             if(currentButtonState != lastButtonState){
                 lastButtonState = currentButtonState;
             }
