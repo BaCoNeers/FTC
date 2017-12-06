@@ -76,8 +76,8 @@ public class Drive extends LinearOpMode {
     private boolean lastButtonState = false;
 
     //Creating instances
-    private MovingAverage leftAvarage = new MovingAverage(5);
-    private MovingAverage rightAvarage = new MovingAverage(5);
+    private MovingAverage leftAvarage = new MovingAverage(8);
+    private MovingAverage rightAvarage = new MovingAverage(8);
     private MovingAverageTimer avg = new MovingAverageTimer();
     private JewelDrop jewel = new JewelDrop();
 
@@ -107,6 +107,7 @@ public class Drive extends LinearOpMode {
         Telemetry.Item DriveLeftAvg = telemetry.addData("Left drive avarage" , "%12.3f", 0.0);
         Telemetry.Item DriveRightAvg = telemetry.addData("Right drive avarage" , "%12.3f", 0.0);
 
+        divider = 1.0;
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -128,8 +129,8 @@ public class Drive extends LinearOpMode {
 
 
             //Drive
-            double scalePower = (gamepad1.left_stick_y);
-            double steer = (gamepad1.right_stick_x);
+            double scalePower = (gamepad1.right_stick_x*-1);
+            double steer = (gamepad1.left_stick_y*-1);
             if (scalePower == 0.0f) {
                 leftPower = steer;
                 rightPower = -steer;
@@ -140,12 +141,19 @@ public class Drive extends LinearOpMode {
             }
 
             boolean currentButtonState = gamepad1.x;
-            if(currentButtonState == false && lastButtonState == true){
-                divider = divider == 1? 0.1: 1;
+
+            if (currentButtonState && !lastButtonState) {
+                if (divider == 1.0) {
+                    divider = 0.3;
+                }
+                else {
+                    divider = 1.0;
+                }
             }
-            lastButtonState = currentButtonState;
 
-
+            if(currentButtonState != lastButtonState){
+                lastButtonState = currentButtonState;
+            }
 
             robot.leftDrive.setPower(leftAvarage.add(leftPower*divider));
             robot.rightDrive.setPower(rightAvarage.add(rightPower*divider));
@@ -203,8 +211,10 @@ public class Drive extends LinearOpMode {
 
 
             //extendor
+            //Setting lift motor to x and y stick
            robot.extentionUp.setPower(gamepad2.left_stick_y);
            robot.extentionCross.setPower(gamepad2.left_stick_x);
+           //
             if (gamepad1.dpad_left){
                 robot.picker.setPosition(0);
             }
