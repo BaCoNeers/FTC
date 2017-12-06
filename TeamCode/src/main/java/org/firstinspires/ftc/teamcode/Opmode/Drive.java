@@ -35,6 +35,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Configuration;
 import org.firstinspires.ftc.teamcode.Classes.JewelDrop;
 
+@TeleOp(name="Drive", group="Pushbot")
+
 public class Drive extends LinearOpMode {
 
     /* Declare OpMode members. */
