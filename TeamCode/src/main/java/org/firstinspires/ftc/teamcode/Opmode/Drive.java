@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Configuration;
 import org.firstinspires.ftc.teamcode.Classes.JewelDrop;
+import org.firstinspires.ftc.teamcode.util.MovingAverage;
 
 /**
  * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
@@ -67,7 +68,8 @@ public class Drive extends LinearOpMode {
     private double rightPower;
     private double divider;
     private boolean lastButtonState = false;
-
+    private MovingAverage leftAvarage = new MovingAverage(5);
+    private MovingAverage rightAvarage = new MovingAverage(5);
     private JewelDrop jewel = new JewelDrop();
 
     public double lurp(double a,double b,double z){
@@ -111,9 +113,12 @@ public class Drive extends LinearOpMode {
                 divider = divider == 1? 0.1: 1;
             }
             lastButtonState = currentButtonState;
+            leftAvarage.add(leftPower*divider);
+            rightAvarage.add(rightPower*divider);
 
-            robot.leftDrive.setPower(leftPower*divider);
-            robot.rightDrive.setPower(rightPower*divider);
+
+            robot.leftDrive.setPower(leftAvarage.getMovingAverage());
+            robot.rightDrive.setPower(rightAvarage.getMovingAverage());
 
 
 
@@ -168,17 +173,17 @@ public class Drive extends LinearOpMode {
 
 
             //extendor
-           robot.extentionUp.setPower(gamepad2.left_stick_y);
-           robot.extentionCross.setPower(gamepad2.left_stick_x);
-            if (gamepad1.dpad_left){
-                robot.picker.setPosition(0);
-            }
-            if(gamepad1.dpad_right){
-                robot.picker.setPosition(1);
-            }
-            if(!gamepad1.dpad_right && !gamepad2.dpad_left){
-                robot.picker.setPosition(0.5);
-            }
+//           robot.extentionUp.setPower(gamepad2.left_stick_y);
+//           robot.extentionCross.setPower(gamepad2.left_stick_x);
+//            if (gamepad1.dpad_left){
+//                robot.picker.setPosition(0);
+//            }
+//            if(gamepad1.dpad_right){
+//                robot.picker.setPosition(1);
+//            }
+//            if(!gamepad1.dpad_right && !gamepad2.dpad_left){
+//                robot.picker.setPosition(0.5);
+//            }
 
 
         }
