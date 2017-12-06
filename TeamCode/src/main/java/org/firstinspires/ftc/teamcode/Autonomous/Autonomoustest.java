@@ -77,7 +77,7 @@ public class Autonomoustest extends LinearOpMode {
 
 
         telemetry.log().add("before wait for start");
-
+        
         RobotController.RegisterAutonomousController(this);
     }
 

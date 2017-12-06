@@ -33,8 +33,10 @@ package org.firstinspires.ftc.teamcode.Opmode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Configuration;
 import org.firstinspires.ftc.teamcode.util.MovingAverage;
+import org.firstinspires.ftc.teamcode.util.MovingAverageTimer;
 
 /**
  * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
@@ -58,16 +60,25 @@ public class Drive extends LinearOpMode {
 
     /* Declare OpMode members. */
     private Configuration robot           = new Configuration();   // Use a Pushbot's hardware
+
+    //tells me if either left trigger or right trigger as been pressed
     private boolean toMax = false;
     private boolean toMin = false;
-    private double scalePower = (gamepad1.left_stick_y);
-    private double steer = (gamepad1.right_stick_x);
+
+    //Keep power for each motor
     private double leftPower;
     private double rightPower;
+
+    //Allows reduce power
     private double divider;
+
+    //Keep the last button state for a toggel
     private boolean lastButtonState = false;
+
+    //Creating instances
     private MovingAverage leftAvarage = new MovingAverage(5);
     private MovingAverage rightAvarage = new MovingAverage(5);
+    private MovingAverageTimer avg = new MovingAverageTimer();
     private JewelDrop jewel = new JewelDrop();
 
     public double lurp(double a,double b,double z){
@@ -89,6 +100,13 @@ public class Drive extends LinearOpMode {
         telemetry.addData("Say", "Hello Driver");    //
         telemetry.update();
 
+        telemetry.setAutoClear(false);
+        Telemetry.Item avgItem = telemetry.addData("average" , "%12.3f", 0.0);
+        Telemetry.Item DriveLeft = telemetry.addData("Left drive" , "%12.3f", 0.0);
+        Telemetry.Item DriveRight = telemetry.addData("Right drive" , "%12.3f", 0.0);
+        Telemetry.Item DriveLeftAvg = telemetry.addData("Left drive avarage" , "%12.3f", 0.0);
+        Telemetry.Item DriveRightAvg = telemetry.addData("Right drive avarage" , "%12.3f", 0.0);
+
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -96,7 +114,22 @@ public class Drive extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
+
+
+            avg.update();
+
+            avgItem.setValue("%12.3f",avg.average());
+            DriveLeft.setValue("%12.3f",leftPower);
+            DriveRight.setValue("%12.3f",rightPower);
+            DriveLeftAvg.setValue("%12.3f",leftAvarage.getMovingAverage());
+            DriveRightAvg.setValue("%12.3f",rightAvarage.getMovingAverage());
+
+            telemetry.update();
+
+
             //Drive
+            double scalePower = (gamepad1.left_stick_y);
+            double steer = (gamepad1.right_stick_x);
             if (scalePower == 0.0f) {
                 leftPower = steer;
                 rightPower = -steer;
@@ -111,12 +144,11 @@ public class Drive extends LinearOpMode {
                 divider = divider == 1? 0.1: 1;
             }
             lastButtonState = currentButtonState;
-            leftAvarage.add(leftPower*divider);
-            rightAvarage.add(rightPower*divider);
 
 
-            robot.leftDrive.setPower(leftAvarage.getMovingAverage());
-            robot.rightDrive.setPower(rightAvarage.getMovingAverage());
+
+            robot.leftDrive.setPower(leftAvarage.add(leftPower*divider));
+            robot.rightDrive.setPower(rightAvarage.add(rightPower*divider));
 
 
 
@@ -171,17 +203,17 @@ public class Drive extends LinearOpMode {
 
 
             //extendor
-//           robot.extentionUp.setPower(gamepad2.left_stick_y);
-//           robot.extentionCross.setPower(gamepad2.left_stick_x);
-//            if (gamepad1.dpad_left){
-//                robot.picker.setPosition(0);
-//            }
-//            if(gamepad1.dpad_right){
-//                robot.picker.setPosition(1);
-//            }
-//            if(!gamepad1.dpad_right && !gamepad2.dpad_left){
-//                robot.picker.setPosition(0.5);
-//            }
+           robot.extentionUp.setPower(gamepad2.left_stick_y);
+           robot.extentionCross.setPower(gamepad2.left_stick_x);
+            if (gamepad1.dpad_left){
+                robot.picker.setPosition(0);
+            }
+            if(gamepad1.dpad_right){
+                robot.picker.setPosition(1);
+            }
+            if(!gamepad1.dpad_right && !gamepad2.dpad_left){
+                robot.picker.setPosition(0.5);
+            }
 
 
         }
