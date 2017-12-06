@@ -102,11 +102,6 @@ public class Drive extends LinearOpMode {
 
         telemetry.setAutoClear(false);
         Telemetry.Item avgItem = telemetry.addData("average" , "%12.3f", 0.0);
-        Telemetry.Item DriveLeft = telemetry.addData("Left drive" , "%12.3f", 0.0);
-        Telemetry.Item DriveRight = telemetry.addData("Right drive" , "%12.3f", 0.0);
-        Telemetry.Item DriveLeftAvg = telemetry.addData("Left drive avarage" , "%12.3f", 0.0);
-        Telemetry.Item DriveRightAvg = telemetry.addData("Right drive avarage" , "%12.3f", 0.0);
-
         divider = 1.0;
 
         // Wait for the game to start (driver presses PLAY)
@@ -120,10 +115,6 @@ public class Drive extends LinearOpMode {
             avg.update();
 
             avgItem.setValue("%12.3f",avg.average());
-            DriveLeft.setValue("%12.3f",leftPower);
-            DriveRight.setValue("%12.3f",rightPower);
-            DriveLeftAvg.setValue("%12.3f",leftAvarage.getMovingAverage());
-            DriveRightAvg.setValue("%12.3f",rightAvarage.getMovingAverage());
 
             telemetry.update();
 
