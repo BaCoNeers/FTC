@@ -32,10 +32,8 @@ package org.firstinspires.ftc.teamcode.Opmode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Configuration;
-import org.firstinspires.ftc.teamcode.Classes.JewelDrop;
 import org.firstinspires.ftc.teamcode.util.MovingAverage;
 
 /**
