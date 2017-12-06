@@ -76,10 +76,10 @@ public class Drive extends LinearOpMode {
     private boolean lastButtonState = false;
 
     //Creating instances
-    private MovingAverage leftAvarage = new MovingAverage(5);
-    private MovingAverage rightAvarage = new MovingAverage(5);
+    private MovingAverage leftAvarage = new MovingAverage(8);
+    private MovingAverage rightAvarage = new MovingAverage(8);
     private MovingAverageTimer avg = new MovingAverageTimer();
-    private JewelDrop jewel = new JewelDrop();
+    
 
     public double lurp(double a,double b,double z){
         double number = 0;
@@ -107,6 +107,7 @@ public class Drive extends LinearOpMode {
         Telemetry.Item DriveLeftAvg = telemetry.addData("Left drive avarage" , "%12.3f", 0.0);
         Telemetry.Item DriveRightAvg = telemetry.addData("Right drive avarage" , "%12.3f", 0.0);
 
+        divider = 1.0;
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -128,24 +129,34 @@ public class Drive extends LinearOpMode {
 
 
             //Drive
-            double scalePower = (gamepad1.left_stick_y);
-            double steer = (gamepad1.right_stick_x);
+            //Scale power is forward movement
+            double scalePower = (gamepad1.right_stick_x*-1);
+            double steer = (gamepad1.left_stick_y*-1);
+            //If forward movement (scalePower) has no number, it will just use steer to move
             if (scalePower == 0.0f) {
                 leftPower = steer;
                 rightPower = -steer;
             }
+            //else
             else {
                 leftPower = scalePower * ((steer < 0) ? 1.0f + steer : 1.0f);
                 rightPower = scalePower * ((steer > 0) ? 1.0f - steer : 1.0f);
             }
 
             boolean currentButtonState = gamepad1.x;
-            if(currentButtonState == false && lastButtonState == true){
-                divider = divider == 1? 0.1: 1;
+
+            if (currentButtonState && !lastButtonState) {
+                if (divider == 1.0) {
+                    divider = 0.3;
+                }
+                else {
+                    divider = 1.0;
+                }
             }
-            lastButtonState = currentButtonState;
 
-
+            if(currentButtonState != lastButtonState){
+                lastButtonState = currentButtonState;
+            }
 
             robot.leftDrive.setPower(leftAvarage.add(leftPower*divider));
             robot.rightDrive.setPower(rightAvarage.add(rightPower*divider));
@@ -175,10 +186,15 @@ public class Drive extends LinearOpMode {
 
 
             //lift
+            //Just setting the motors of the lift
             robot.ymotion.setPower(gamepad2.right_stick_x * -1);
-            robot.xmotion.setPower(  gamepad2.right_stick_y * -1);
+            robot.xmotion.setPower(gamepad2.right_stick_y * -1);
 
             //grabber
+            //This will first set toMax or toMix to true when the bumper is pressed
+            //So that i know it has been pressed, once its pressed i will move the grabber and
+            //when the opposite touch sensor is pressed it will stop moving the servo and the
+            //booleans (toMax and toMin) will be set to false to stop it moving.
             if(gamepad2.left_bumper){
                 toMax = true;
             }
@@ -203,8 +219,10 @@ public class Drive extends LinearOpMode {
 
 
             //extendor
+            //Setting lift motor to x and y stick
            robot.extentionUp.setPower(gamepad2.left_stick_y);
            robot.extentionCross.setPower(gamepad2.left_stick_x);
+           //THis will move the servo if dpad is pressed other wise it will be set to 0.5
             if (gamepad1.dpad_left){
                 robot.picker.setPosition(0);
             }
