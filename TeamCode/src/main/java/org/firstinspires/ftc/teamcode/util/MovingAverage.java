@@ -13,7 +13,6 @@ public class MovingAverage {
 
     private double movingTotal;
     private double movingAverage;
-    private double runningTotal;
     private long count;
 
     public MovingAverage(int num) {
@@ -26,16 +25,14 @@ public class MovingAverage {
         count = 0;
         movingTotal = 0.0;
         movingAverage = 0.0;
-        runningTotal = 0.0;
         for (int i=0; i<ringBufferSize; i++) {
             ringBuffer[i]=0;
         }
     }
 
-    public void add(double value) {
+    public double  add(double value) {
         // Adjust the running total
         movingTotal = movingTotal - ringBuffer[ringBufferIndex] + value;
-        runningTotal = runningTotal + value;
 
         // increment the count
         count += 1;
@@ -53,6 +50,8 @@ public class MovingAverage {
 
         // wrap the current index
         ringBufferIndex = (ringBufferIndex + 1) % ringBufferSize;
+
+        return movingAverage;
     }
 
     public double getMovingAverage() {
