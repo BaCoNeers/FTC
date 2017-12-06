@@ -6,14 +6,21 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.vuforia.HINT;
+import com.vuforia.Vuforia;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 /**
  * Autonomous program being used for test
@@ -22,57 +29,50 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 @Autonomous(name = "Autonomoustest")
 public class Autonomoustest extends LinearOpMode {
     // Declare drive motors
-
-    BNO055IMU imu;
+    Configuration robot = new Configuration();
     Orientation angles;
     public float heading;
-    private DcMotor motor1;
-    private DcMotor motor2;
-    public float difference;
-    public boolean anglereached;
+
+
 
 
     // Constants for moving arm
 
     @Override
     public void runOpMode() throws InterruptedException {
-        // Initialize drive motors
+
+        VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
+        params.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+        params.vuforiaLicenseKey = "AQQN8vT/////AAAAGR2kWcTZSEaGsNmfOFgjVCpfRMD0rrC8iVwL5YiD9FQny/LDfDTPHuZMkS31CZvPgOpu9GPC10zAHbs2om9lY3IZmlQ944EDdEeCFkzTFlN5Fk1/gzwUbMgR1+8qwBy/7FsoQOgXFApTWMRfogt6FqXahm7g0gpfzDiOhAPHgHmMDYL5wqHdBgRdt12rT6FnwePm7H3Z7hcEPh7BwLoD8wFa9mqhDnNkm2czsZLiGgQQGy3bdWY3kq3Hzn6XNDREjq4xk2RmTMWZi6BFDZgFAMaaTT2PdLoF6waMR+o21FW/EHCRd1fJu1fNPSvtyLdwxkUG+JrjVtTBBQGrQ5mHRuZ/Bp0XlHijhW0KEh6/G7lb";
+        params.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
+
+        VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(params);
+        Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4);
+
+        VuforiaTrackables cyper = vuforia.loadTrackablesFromAsset("RelicVuMark");
+        cyper.get(0).setName("0");
+        cyper.get(1).setName("1");
+        cyper.get(2).setName("3");
+        cyper.activate();
+
+        robot.leftDrive.resetDeviceConfigurationForOpMode();
+        robot.rightDrive.resetDeviceConfigurationForOpMode();
+        robot.leftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        robot.rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        robot.leftDrive.setPower(0);
+        robot.rightDrive.setPower(0);
+
+        robot.imu.startAccelerationIntegration(new Position(), new Velocity(), 10);
 
 
-        // If drive motors are given full power, robot would spin because of the motors being in
-        // opposite directions. So reverse one
-
-
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        // parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-        motor1 = hardwareMap.dcMotor.get("driveRight");
-        motor2 = hardwareMap.dcMotor.get("driveLeft");
-        motor1.resetDeviceConfigurationForOpMode();
-        motor2.resetDeviceConfigurationForOpMode();
-        motor1.setDirection(DcMotorSimple.Direction.REVERSE);
-        motor2.setDirection(DcMotorSimple.Direction.FORWARD);
-        motor1.setPower(0);
-        motor2.setPower(0);
-
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 10);
-
-
-        telemetry.log().add("current position 1 %d", motor1.getCurrentPosition());
-        telemetry.log().add("current position 2 %d", motor2.getCurrentPosition());
+        telemetry.log().add("current position 1 %d", robot.leftDrive.getCurrentPosition());
+        telemetry.log().add("current position 2 %d", robot.rightDrive.getCurrentPosition());
 
 
 
         telemetry.log().add("before wait for start");
         waitForStart();
+        Jewel(true);
         DriveForward(0.5,10000);
         turn(90,Turn.LEFT);
         DriveForward(0.5,10000);
@@ -90,7 +90,7 @@ public class Autonomoustest extends LinearOpMode {
         Telemetry.Item angItem = telemetry.addData("angle", "%12.3f", 0.0);
         Telemetry.Item teltargetangle = telemetry.addData("target angle", "%12.3f", 0.0);
         telemetry.log().add("in turn");
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         heading = angles.firstAngle;
         float offset = 0;
         float targetangle;
@@ -133,22 +133,22 @@ public class Autonomoustest extends LinearOpMode {
 
             count++;
             if (diff < 0) {
-                motor1.setPower(-0.21);
-                motor2.setPower(0.21);
+                robot.leftDrive.setPower(0.21);
+                robot.rightDrive.setPower(-0.21);
             } else {
-                motor1.setPower(0.21);
-                motor2.setPower(-0.21);
+                robot.leftDrive.setPower(-0.21);
+                robot.rightDrive.setPower(0.21);
             }
 
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             heading = angles.firstAngle + offset;
             diff = heading - targetangle;
             angItem.setValue("%12.3f", heading);
 
         }
 
-            motor1.setPower(0);
-            motor2.setPower(0);
+        robot.leftDrive.setPower(0);
+        robot.rightDrive.setPower(0);
         }
 
         public void DriveForward(int distance)
@@ -162,20 +162,20 @@ public class Autonomoustest extends LinearOpMode {
             boolean reachedmotor1 = false;
             boolean reachedmotor2 = false;
 
-            motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
 
 
-            motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-            motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-            motor1.setPower(power);
-            motor2.setPower(power);
+            robot.leftDrive.setPower(-power);
+            robot.rightDrive.setPower(-power);
 
 
             int loopcount = 0;
@@ -187,49 +187,78 @@ public class Autonomoustest extends LinearOpMode {
 
 
                 telemetry.log().add("in loop %d",loopcount);
-                telemetry.log().add("current position 1 %d", motor1.getCurrentPosition());
-                telemetry.log().add("current position 2 %d", motor2.getCurrentPosition());
+                telemetry.log().add("current position 1 %d", robot.leftDrive.getCurrentPosition());
+                telemetry.log().add("current position 2 %d", robot.rightDrive.getCurrentPosition());
                 telemetry.log().add("reached motor 1 : %b", reachedmotor1);
                 telemetry.log().add("reached motor 2 : %b", reachedmotor2);
                     telemetry.log().add("distance %d", distance);
 
-                if (motor1.getCurrentPosition() >= distance)
+                if (robot.leftDrive.getCurrentPosition() > distance)
                 {
                     telemetry.log().add("motor2 > distance");
-                    motor1.setPower(0);
+                    robot.leftDrive.setPower(0);
                     reachedmotor1 = true;
                 }
-                if (motor1.getCurrentPosition() <= distance)
-                {
-                    telemetry.log().add("motor1 < distance");
-                }
-                if (motor2.getCurrentPosition() > distance)
+                if (robot.rightDrive.getCurrentPosition() > distance)
                 {
                     telemetry.log().add("motor2 > distance");
-                    motor2.setPower(0);
+                    robot.rightDrive.setPower(0);
                     reachedmotor2 = true;
                 }
-                if (motor2.getCurrentPosition() < distance)
-                {
-                    telemetry.log().add("motor2 < distance");
-                }
+
 
             }
-            motor1.setPower(0);
-            motor2.setPower(0);
+            robot.leftDrive.setPower(0);
+            robot.rightDrive.setPower(0);
 
-            motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            robot.rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-            motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-            motor1.setDirection(DcMotorSimple.Direction.REVERSE);
+
         }
+
+
+        public void Jewel(boolean toggle){
+            robot.drop.setPosition(1);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (robot.drop.getPosition() == 1 && (robot.Colour.blue() > 0 || robot.Colour.red() > 0)) {
+                if (toggle) {
+                    if (robot.Colour.blue() > robot.Colour.red()) {
+                        robot.push.setPosition(1);
+                    } else {
+                        robot.push.setPosition(0);
+                    }
+                } else {
+                    if (robot.Colour.red() > robot.Colour.blue()) {
+                        robot.push.setPosition(1);
+                    } else {
+                        robot.push.setPosition(0);
+                    }
+                }
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            robot.drop.setPosition(0.5);
+            robot.push.setPosition(0.45);
+
+
     }
+
+
+}
 
 
 
