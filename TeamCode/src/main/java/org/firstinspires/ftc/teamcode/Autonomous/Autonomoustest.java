@@ -71,9 +71,9 @@ public class Autonomoustest extends LinearOpMode {
         telemetry.log().add("before wait for start");
         waitForStart();
         Jewel(true);
-        DriveForward(0.5,10000);
-        turn(90,Turn.LEFT);
-        DriveForward(0.5,10000);
+//        DriveForward(0.5,10000);
+//        turn(90,Turn.LEFT);
+//        DriveForward(0.5,10000);
 
     }
 
