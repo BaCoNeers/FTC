@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.R;
  * Autonomous program being used for test
  */
 
-@Autonomous(name = "Autonomoustest")
+@Autonomous(name = "Autonomous")
 public class Autonomoustest extends LinearOpMode {
     // Declare drive motors
     Configuration robot = new Configuration();
