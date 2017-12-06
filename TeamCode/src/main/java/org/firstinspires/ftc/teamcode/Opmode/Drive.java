@@ -129,12 +129,15 @@ public class Drive extends LinearOpMode {
 
 
             //Drive
+            //Scale power is forward movement
             double scalePower = (gamepad1.right_stick_x*-1);
             double steer = (gamepad1.left_stick_y*-1);
+            //If forward movement (scalePower) has no number, it will just use steer to move
             if (scalePower == 0.0f) {
                 leftPower = steer;
                 rightPower = -steer;
             }
+            //else
             else {
                 leftPower = scalePower * ((steer < 0) ? 1.0f + steer : 1.0f);
                 rightPower = scalePower * ((steer > 0) ? 1.0f - steer : 1.0f);
@@ -183,10 +186,15 @@ public class Drive extends LinearOpMode {
 
 
             //lift
+            //Just setting the motors of the lift
             robot.ymotion.setPower(gamepad2.right_stick_x * -1);
-            robot.xmotion.setPower(  gamepad2.right_stick_y * -1);
+            robot.xmotion.setPower(gamepad2.right_stick_y * -1);
 
             //grabber
+            //This will first set toMax or toMix to true when the bumper is pressed
+            //So that i know it has been pressed, once its pressed i will move the grabber and
+            //when the opposite touch sensor is pressed it will stop moving the servo and the
+            //booleans (toMax and toMin) will be set to false to stop it moving.
             if(gamepad2.left_bumper){
                 toMax = true;
             }
@@ -214,7 +222,7 @@ public class Drive extends LinearOpMode {
             //Setting lift motor to x and y stick
            robot.extentionUp.setPower(gamepad2.left_stick_y);
            robot.extentionCross.setPower(gamepad2.left_stick_x);
-           //
+           //THis will move the servo if dpad is pressed other wise it will be set to 0.5
             if (gamepad1.dpad_left){
                 robot.picker.setPosition(0);
             }
