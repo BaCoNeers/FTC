@@ -137,14 +137,18 @@ public class Drive extends LinearOpMode {
                 leftPower = steer;
                 rightPower = -steer;
             }
-            //else
+            //else it will combine both steer and scalePower
             else {
+                //(steer < 0) is like a if statment if its true
+                // it will use 1.0f + steer else it will use 1.0f
                 leftPower = scalePower * ((steer < 0) ? 1.0f + steer : 1.0f);
                 rightPower = scalePower * ((steer > 0) ? 1.0f - steer : 1.0f);
             }
 
+            //Keep track of gamepad1.x which is just the x button
             boolean currentButtonState = gamepad1.x;
-
+            //check if current button state is true and last button state is false
+            //so that it will only because true when you realise the button
             if (currentButtonState && !lastButtonState) {
                 if (divider == 1.0) {
                     divider = 0.3;
@@ -153,7 +157,7 @@ public class Drive extends LinearOpMode {
                     divider = 1.0;
                 }
             }
-
+            //If current button states changed then change last button state
             if(currentButtonState != lastButtonState){
                 lastButtonState = currentButtonState;
             }
