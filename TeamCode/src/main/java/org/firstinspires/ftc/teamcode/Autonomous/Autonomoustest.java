@@ -34,13 +34,13 @@ public class Autonomoustest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
+        robot = new Configuration();
 
+
+        robot.init(hardwareMap);
 
         VuforiaInit();
-        robot = new Configuration();
-        //robot.leftDrive.resetDeviceConfigurationForOpMode();
-        //robot.rightDrive.resetDeviceConfigurationForOpMode();
-        robot.init(hardwareMap);
+
 
         RobotInit();
 
@@ -70,6 +70,8 @@ public class Autonomoustest extends LinearOpMode {
     }
 
     public void RobotInit() {
+        robot.leftDrive.resetDeviceConfigurationForOpMode();
+        robot.rightDrive.resetDeviceConfigurationForOpMode();
         robot.leftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         robot.rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         robot.leftDrive.setPower(0);
