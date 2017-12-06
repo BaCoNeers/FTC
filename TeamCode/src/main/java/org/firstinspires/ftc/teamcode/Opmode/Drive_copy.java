@@ -65,7 +65,11 @@ public class Drive_copy extends LinearOpMode {
     private double  drive;
     private JewelDrop jewel = new JewelDrop();
 
-
+    public double lerp(double a, double b, double z){
+        double number = 0;
+        number = a+(b-a)*z;
+        return number;
+    }
 
     @Override
     public void runOpMode() {
@@ -77,7 +81,7 @@ public class Drive_copy extends LinearOpMode {
         robot.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "Hello Driver");    //
+        telemetry.addData("Say", "Hello Driver");
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -85,8 +89,48 @@ public class Drive_copy extends LinearOpMode {
 //        jewel.Jewel(true, robot);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            robot.leftDrive.setPower(0.5);
-            robot.rightDrive.setPower(0.5);
+
+
+
+//            double forward = gamepad1.left_stick_y;
+//            double speedLeft =  forward;
+//            double speedRight = forward;
+//            double turning = gamepad1.right_stick_x;
+//
+//
+//
+//            double forwardLeftMotor = forward;
+//            double forwardRightMotor = forward;
+//            double clockwiseLeftMotor = turning;
+//            double clockwiseRightMotor = -turning;
+//
+//
+//            speedLeft = forward*lerp(1,1,turning);
+//            speedRight = forward*lerp(1,-1,turning);
+//            speedLeft = (forward * (1-Math.abs(turning))+turning*(1-Math.abs(forward)))*0.1;
+//            speedRight = (forward * (1-Math.abs(turning))-turning*(1-Math.abs(forward)))*0.1  ;
+////            speedLeft *= turning;
+////            speedRight *= -turning;
+
+
+            double scalePower = (gamepad1.left_stick_y);
+
+            double steer = (gamepad1.right_stick_x);
+            double leftPower;
+            double rightPower;
+            if (scalePower == 0.0f) {
+                leftPower = steer;
+                rightPower = -steer;
+            }
+            else {
+                leftPower = scalePower * ((steer < 0) ? 1.0f + steer : 1.0f);
+                rightPower = scalePower * ((steer > 0) ? 1.0f - steer : 1.0f);
+            }
+
+            robot.leftDrive.setPower(leftPower);
+            robot.rightDrive.setPower(rightPower);
+
+
         }
     }
 

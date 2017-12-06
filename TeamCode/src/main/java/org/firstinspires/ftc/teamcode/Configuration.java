@@ -118,8 +118,8 @@ public class Configuration
         rightDrive.setPower(0);
 
         // Set all motors to run with encoders.
-        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while(!max.isPressed()){
             grabber.setPosition(0);

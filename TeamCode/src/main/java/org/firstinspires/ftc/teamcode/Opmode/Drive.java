@@ -32,6 +32,8 @@ package org.firstinspires.ftc.teamcode.Opmode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 import org.firstinspires.ftc.teamcode.Configuration;
 import org.firstinspires.ftc.teamcode.Classes.JewelDrop;
 
@@ -57,19 +59,22 @@ public class Drive extends LinearOpMode {
 
     /* Declare OpMode members. */
     private Configuration robot           = new Configuration();   // Use a Pushbot's hardware
-    private boolean toggle = false;
     private boolean toMax = false;
     private boolean toMin = false;
-    private double divider = 1;
-    private double  Forward;
-    private double  Turning;
-    private double  oldTurning;
-    private double oldForward;
-    private boolean leftStickY;
-    private boolean rightStickX;
+    private double scalePower = (gamepad1.left_stick_y);
+    private double steer = (gamepad1.right_stick_x);
+    private double leftPower;
+    private double rightPower;
+    private double divider;
+    private boolean lastButtonState = false;
+
     private JewelDrop jewel = new JewelDrop();
 
-
+    public double lurp(double a,double b,double z){
+        double number = 0;
+        number = a+(b-a)*z;
+        return number;
+    }
 
     @Override
     public void runOpMode() {
@@ -84,40 +89,51 @@ public class Drive extends LinearOpMode {
         telemetry.addData("Say", "Hello Driver");    //
         telemetry.update();
 
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-//        jewel.Jewel(true, robot);
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            telemetry.log().add("Left drive: %f",(gamepad1.left_stick_y*-1)+gamepad1.right_stick_x);
-            telemetry.log().add("Right drive: %f",(gamepad1.left_stick_y*-1)-gamepad1.right_stick_x);
-
-
-
             //Drive
-            if (gamepad1.left_stick_y>0){
-                leftStickY = true;
+            if (scalePower == 0.0f) {
+                leftPower = steer;
+                rightPower = -steer;
             }
-            else{
-                leftStickY = false;
+            else {
+                leftPower = scalePower * ((steer < 0) ? 1.0f + steer : 1.0f);
+                rightPower = scalePower * ((steer > 0) ? 1.0f - steer : 1.0f);
             }
-            if(gamepad1.right_stick_x>0){
-                rightStickX = true;
+
+            boolean currentButtonState = gamepad1.x;
+            if(currentButtonState == false && lastButtonState == true){
+                divider = divider == 1? 0.1: 1;
             }
-            else{
-                rightStickX = false;
-            }
-            Forward = Math.max(Math.pow(gamepad1.left_stick_y,2),oldForward);
-            Turning = Math.max(Math.pow(gamepad1.right_stick_x,2),oldTurning);
-            if(!leftStickY){
-                Forward -=0.01;
-            }
-            if(!rightStickX){
-                Turning -=0.01;
-            }
-            robot.rightDrive.setPower(Forward+Turning);
-            robot.leftDrive.setPower(Forward-Turning);
+            lastButtonState = currentButtonState;
+
+            robot.leftDrive.setPower(leftPower*divider);
+            robot.rightDrive.setPower(rightPower*divider);
+
+
+
+//            if (gamepad1.left_stick_y>0){
+//                leftStickY = true;
+//            }
+//            else{
+//                leftStickY = false;
+//            }
+//            if(gamepad1.right_stick_x>0){
+//                rightStickX = true;
+//            }
+//            else{
+//                rightStickX = false;
+//            }
+//            Forward = Math.max(Math.pow(gamepad1.left_stick_y,2),oldForward);
+//            Turning = Math.max(Math.pow(gamepad1.right_stick_x,2),oldTurning);
+//
+//            robot.rightDrive.setPower(Forward+Turning);
+//            robot.leftDrive.setPower(Forward-Turning);
 
 
 
@@ -151,8 +167,8 @@ public class Drive extends LinearOpMode {
 
 
 
-//            //extendor
-           robot.extentionUp.setPower(gamepad2.left_stick_y*-1);
+            //extendor
+           robot.extentionUp.setPower(gamepad2.left_stick_y);
            robot.extentionCross.setPower(gamepad2.left_stick_x);
             if (gamepad1.dpad_left){
                 robot.picker.setPosition(0);
@@ -164,9 +180,7 @@ public class Drive extends LinearOpMode {
                 robot.picker.setPosition(0.5);
             }
 
-            // Drive
-            oldForward = Forward;
-            oldTurning = Turning;
+
         }
     }
 
