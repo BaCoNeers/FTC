@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.R;
  * Autonomous program being used for test
  */
 
-@Autonomous(name = "Autonomoustest")
+@Autonomous(name = "Autonomous")
 public class Autonomoustest extends LinearOpMode {
     // Declare drive motors
     Configuration robot = new Configuration();
@@ -83,9 +83,9 @@ public class Autonomoustest extends LinearOpMode {
 
     public void Run1() {
         RobotController.Jewel(true);
-        RobotController.driveForward(0.5f, 1.0f);
-        RobotController.turn(90, Turn.LEFT);
-        RobotController.driveForward(0.5f, 1.0f);
+//        RobotController.driveForward(0.5f, 1.0f);
+//        RobotController.turn(90, Turn.LEFT);
+//        RobotController.driveForward(0.5f, 1.0f);
     }
 
 
