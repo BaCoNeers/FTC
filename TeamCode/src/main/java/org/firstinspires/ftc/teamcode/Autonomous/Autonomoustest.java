@@ -83,7 +83,7 @@ public class Autonomoustest extends LinearOpMode {
 
     public void Run1() {
         //True:blue False:red
-        RobotController.Jewel(true);
+//        RobotController.Jewel(true);
 //        RobotController.driveForward(0.5f, 1.0f);
 //        RobotController.turn(90, Turn.LEFT);
 //        RobotController.driveForward(0.5f, 1.0f);
