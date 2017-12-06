@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.vuforia.HINT;
 import com.vuforia.Vuforia;
 
@@ -22,7 +23,7 @@ import org.firstinspires.ftc.teamcode.R;
 @Autonomous(name = "Autonomous")
 public class Autonomoustest extends LinearOpMode {
     // Declare drive motors
-    Configuration robot = new Configuration();
+    Configuration robot;
 
 
     // Constants for moving arm
@@ -33,7 +34,13 @@ public class Autonomoustest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
+        robot = new Configuration();
+
+
+        robot.init(hardwareMap);
+
         VuforiaInit();
+
 
         RobotInit();
 
@@ -56,9 +63,9 @@ public class Autonomoustest extends LinearOpMode {
         Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4);
 
         VuforiaTrackables cyper = vuforia.loadTrackablesFromAsset("RelicVuMark");
-        cyper.get(0).setName("0");
-        cyper.get(1).setName("1");
-        cyper.get(2).setName("3");
+        for (int i=0; i< cyper.size();i++) {
+            cyper.get(i).setName(Integer.toString(i));
+        }
         cyper.activate();
     }
 

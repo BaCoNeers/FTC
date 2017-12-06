@@ -79,7 +79,7 @@ public class Drive extends LinearOpMode {
     private MovingAverage leftAvarage = new MovingAverage(10);
     private MovingAverage rightAvarage = new MovingAverage(10);
     private MovingAverageTimer avg = new MovingAverageTimer();
-    
+
 
     public double lurp(double a,double b,double z){
         double number = 0;
