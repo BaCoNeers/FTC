@@ -32,6 +32,8 @@ package org.firstinspires.ftc.teamcode.Opmode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Configuration;
 import org.firstinspires.ftc.teamcode.Classes.JewelDrop;
 
@@ -67,6 +69,12 @@ public class Drive extends LinearOpMode {
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
         telemetry.update();
+
+        telemetry.setAutoClear(false);
+        Telemetry.Item leftdrive = telemetry.addData("Left drive" , "%12.3f", 0.0);
+        Telemetry.Item rightdrive = telemetry.addData("right drive" , "%12.3f", 0.0);
+        Telemetry.Item leftdrivebias = telemetry.addData("Left drive bias" , "%12.3f", 0.0);
+        Telemetry.Item rightdrivebias = telemetry.addData("right drive bias" , "%12.3f", 0.0);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
