@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Configuration;
+import org.firstinspires.ftc.teamcode.util.MovingAverage;
 
 @TeleOp(name="Drive", group="Pushbot")
 
@@ -47,6 +48,8 @@ public class Drive extends LinearOpMode {
     private boolean toMin = false;
     private double multiplier = 1;
     private boolean lastButtonState = false;
+    private MovingAverage leftavg = new MovingAverage(10);
+    private MovingAverage rightavg = new MovingAverage(10);
 
 
 
@@ -105,8 +108,8 @@ public class Drive extends LinearOpMode {
                 lastButtonState = currentButtonState;
             }
 
-            robot.leftDrive.setPower(multiplier * drive_bias.x);
-            robot.rightDrive.setPower(multiplier * drive_bias.y);
+            robot.leftDrive.setPower(leftavg.add((((gamepad1.right_trigger-gamepad1.left_trigger)*-1)-gamepad1.right_stick_x)*multiplier));
+            robot.rightDrive.setPower(rightavg.add((((gamepad1.right_trigger-gamepad1.left_trigger)*1)-gamepad1.right_stick_x)*multiplier));
 
 
 
