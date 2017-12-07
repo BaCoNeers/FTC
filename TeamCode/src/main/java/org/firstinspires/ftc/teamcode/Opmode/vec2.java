@@ -34,11 +34,10 @@ public class vec2 {
     }
 
     public static vec2 lerp(vec2 a, vec2 b, double amount) {
-        vec2 result = new vec2();
-
-
-
-        return result;
+        vec2 b_take_a = b.subtract(a);
+        vec2 b_mul_a = b_take_a.multiply(amount);
+        vec2 RESULT = a.add(b_mul_a);
+        return RESULT;
     }
 
     public vec2 add(vec2 value) {
