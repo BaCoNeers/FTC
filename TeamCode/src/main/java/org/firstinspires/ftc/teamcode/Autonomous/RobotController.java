@@ -240,17 +240,18 @@ public class RobotController {
 
 
     }
-
+    //jewel drop
     public static void Jewel( boolean toggle) {
-
-
+        // lower the arm and wait a second
         robot.drop.setPosition(1);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         if (robot.drop.getPosition() == 1 && (robot.Colour.blue() > 0 || robot.Colour.red() > 0)) {
+            //check for which ball were looking for and change position accordingly
             if (toggle) {
                 if (robot.Colour.blue() > robot.Colour.red()) {
                     robot.push.setPosition(1);
@@ -265,29 +266,33 @@ public class RobotController {
                 }
             }
         }
+        //wait for the ball to be knocked of
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        //reset arms back in there normal position
         robot.drop.setPosition(0.3);
         robot.push.setPosition(0.45);
 
 
     }
 
-
+    //function to set the starting angle
     public static void setStartAngle(){
         Orientation angles;
         angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         startAngle = angles.firstAngle;
     }
 
+    //function to fix the heading issue
     public static void fixHeading(){
         float heading;
         Orientation angles;
         angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         heading = angles.firstAngle;
+        telemetry.log().add("heading%f" , heading);
 
         while (startAngle < heading){
             robot.leftDrive.setPower(-0.15);
