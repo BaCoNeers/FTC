@@ -132,9 +132,6 @@ public class Configuration
         leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        while(!max.isPressed()){
-            grabber.setPosition(0);
-        }
         picker.setPosition(0.5);
         grabber.setPosition(0.5);
         push.setPosition(0.45);

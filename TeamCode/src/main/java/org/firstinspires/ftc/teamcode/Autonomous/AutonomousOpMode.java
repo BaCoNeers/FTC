@@ -80,17 +80,19 @@ public class AutonomousOpMode extends LinearOpMode {
         telemetry.log().add("before wait for start");
         
         RobotController.RegisterAutonomousController(this);
+        RobotController.closeGrabber();
     }
 
     public void Run1() {
         //True:blue False:red
         RobotController.setStartAngle();
+        RobotController.moveyUp();
         RobotController.Jewel(false);
-        RobotController.driveForward(0.3f, 0.35f);
-        RobotController.driveBackward(0.3f , 1f);
+       // RobotController.driveForward(0.3f, 0.1f);
+        RobotController.driveBackward(0.3f , 0.6f);
         RobotController.fixHeading();
-        RobotController.driveBackward(0.3f,0.55f);
-        RobotController.turn(90, Turn.LEFT);
+        RobotController.driveBackward(0.3f,0.6f);
+        RobotController.turn(90, Turn.RIGHT);
         RobotController.driveForward(0.3f, 0.2f);
         RobotController.openGrabber();
         RobotController.driveBackward(0.3f,0.55f);

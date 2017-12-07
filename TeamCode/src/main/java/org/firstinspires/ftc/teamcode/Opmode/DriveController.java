@@ -35,7 +35,7 @@ public class DriveController {
             drive_power -= (-gamepad.left_trigger) + (gamepad.right_trigger);
         }
         if(drive_power == 0.0 && turning_power != 0) {
-            drive_power = Math.abs(turning_power);
+            //drive_power = Math.abs(turning_power);
         }
 
 

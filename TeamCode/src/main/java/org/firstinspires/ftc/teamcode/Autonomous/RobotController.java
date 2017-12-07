@@ -276,13 +276,6 @@ public class RobotController {
 
     }
 
-    public static void openGrabber (){
-        robot.grabber.setPosition(0);
-        while(!robot.max.isPressed()){
-            robot.grabber.setPosition(0.5);
-
-        }
-    }
 
     public static void setStartAngle(){
         Orientation angles;
@@ -297,17 +290,39 @@ public class RobotController {
         heading = angles.firstAngle;
 
         while (startAngle < heading){
-            robot.leftDrive.setPower(0.2);
-            robot.rightDrive.setPower(-0.2);
+            robot.leftDrive.setPower(-0.15);
+            robot.rightDrive.setPower(0.15);
             angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             heading = angles.firstAngle;
         }
         while (startAngle > heading){
-            robot.leftDrive.setPower(-0.2);
-            robot.rightDrive.setPower(0.2);
+            robot.leftDrive.setPower(0.15);
+            robot.rightDrive.setPower(-0.15);
             angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             heading = angles.firstAngle;
         }
     }
 
+    public static void openGrabber(){
+        robot.grabber.setPosition(0);
+        while(!robot.max.isPressed()){
+            robot.grabber.setPosition(0.5);
+        }
+    }
+
+    public static void closeGrabber(){
+        robot.grabber.setPosition(1);
+        while(!robot.min.isPressed()){
+            robot.grabber.setPosition(0.5);
+        }
+    }
+    public static void moveyUp(){
+        robot.xmotion.setPower(0.5);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        robot.xmotion.setPower(0);
+    }
 }
