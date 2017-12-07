@@ -71,8 +71,8 @@ public class Drive extends LinearOpMode {
         telemetry.update();
 
         telemetry.setAutoClear(false);
-        Telemetry.Item leftdrive = telemetry.addData("Left drive" , "%12.3f", 0.0);
-        Telemetry.Item rightdrive = telemetry.addData("right drive" , "%12.3f", 0.0);
+        Telemetry.Item leftdrive = telemetry.addData("left gamepad" , "%12.3f", 0.0);
+        Telemetry.Item rightdrive = telemetry.addData("right gamepad" , "%12.3f", 0.0);
         Telemetry.Item leftdrivebias = telemetry.addData("Left drive bias" , "%12.3f", 0.0);
         Telemetry.Item rightdrivebias = telemetry.addData("right drive bias" , "%12.3f", 0.0);
 
@@ -82,13 +82,17 @@ public class Drive extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            
-
-
             vec2 drive_bias = DriveController.GetDriveBias(gamepad1);
 
-            robot.rightDrive.setPower(0.1 * drive_bias.x);
-            robot.leftDrive.setPower(0.1 * drive_bias.y);
+            leftdrive.setValue("%12.3f", gamepad1.left_stick_y);
+            rightdrive.setValue("%12.3f",gamepad1.right_stick_x);
+            leftdrivebias.setValue("%12.3f",0.1 * drive_bias.x);
+            rightdrivebias.setValue("%12.3f",0.1 * drive_bias.y);
+
+            telemetry.update();
+
+            robot.leftDrive.setPower(0.1 * drive_bias.x);
+            robot.rightDrive.setPower(0.1 * drive_bias.y);
 
 
             //lift
