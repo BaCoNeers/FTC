@@ -25,9 +25,6 @@ public class Autonomoustest extends LinearOpMode {
     // Declare drive motors
     Configuration robot;
 
-
-    // Constants for moving arm
-
     /*
     Autonomous entry point
      */
@@ -36,16 +33,13 @@ public class Autonomoustest extends LinearOpMode {
 
         robot = new Configuration();
 
-
         robot.init(hardwareMap);
 
         VuforiaInit();
 
-
         RobotInit();
 
         waitForStart();
-
 
         Run1();
 
