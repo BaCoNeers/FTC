@@ -84,12 +84,16 @@ public class AutonomousOpMode extends LinearOpMode {
 
     public void Run1() {
         //True:blue False:red
+        RobotController.setStartAngle();
         RobotController.Jewel(false);
-        RobotController.driveForward(-0.3f, -0.38f);
-        RobotController.driveForward(0.3f , 1f);
-        RobotController.driveForward(0.3f,0.55f);
+        RobotController.driveForward(0.3f, 0.35f);
+        RobotController.driveBackward(0.3f , 1f);
+        RobotController.fixHeading();
+        RobotController.driveBackward(0.3f,0.55f);
         RobotController.turn(90, Turn.LEFT);
         RobotController.driveForward(0.3f, 0.2f);
+        RobotController.openGrabber();
+        RobotController.driveBackward(0.3f,0.55f);
     }
 
 

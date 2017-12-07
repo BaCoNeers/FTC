@@ -18,6 +18,7 @@ public class RobotController {
     private static AutonomousOpMode autonomous;
     private static Telemetry telemetry;
     private static Configuration robot;
+    private static float startAngle;
     
     public static void RegisterAutonomousController(AutonomousOpMode _autonomous) {
 
@@ -111,7 +112,7 @@ public class RobotController {
     }
 
     public static void driveForward( float power, float distance) {
-        driveForward(1, CalcualteDistanceTicks(distance));
+        driveForward(power, CalcualteDistanceTicks(distance));
     }
 
     public static void driveForward( float power, int distance) {
@@ -174,6 +175,71 @@ public class RobotController {
 
 
     }
+    public static void driveBackward( float power, float distance) {
+        driveBackward(power, CalcualteDistanceTicks(distance));
+    }
+
+    public static void driveBackward( float power, int distance) {
+
+
+        boolean reachedmotor1 = false;
+        boolean reachedmotor2 = false;
+        distance = -distance;
+
+        robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        robot.leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        robot.leftDrive.setPower(power);
+        robot.rightDrive.setPower(power);
+
+
+        int loopcount = 0;
+
+        while (reachedmotor1 == false || reachedmotor2 == false) {
+            loopcount++;
+
+
+            telemetry.log().add("in loop %d", loopcount);
+            telemetry.log().add("current position 1 %d", robot.leftDrive.getCurrentPosition());
+            telemetry.log().add("current position 2 %d", robot.rightDrive.getCurrentPosition());
+            telemetry.log().add("reached motor 1 : %b", reachedmotor1);
+            telemetry.log().add("reached motor 2 : %b", reachedmotor2);
+            telemetry.log().add("distance %d", distance);
+
+            if (robot.leftDrive.getCurrentPosition() < distance) {
+                telemetry.log().add("motor2 > distance");
+                robot.leftDrive.setPower(0);
+                reachedmotor1 = true;
+            }
+            if (robot.rightDrive.getCurrentPosition() < distance) {
+                telemetry.log().add("motor2 > distance");
+                robot.rightDrive.setPower(0);
+                reachedmotor2 = true;
+            }
+
+
+        }
+        robot.leftDrive.setPower(0);
+        robot.rightDrive.setPower(0);
+
+        robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+    }
 
     public static void Jewel( boolean toggle) {
 
@@ -204,10 +270,44 @@ public class RobotController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        robot.drop.setPosition(0.5);
+        robot.drop.setPosition(0.3);
         robot.push.setPosition(0.45);
 
 
+    }
+
+    public static void openGrabber (){
+        robot.grabber.setPosition(0);
+        while(!robot.max.isPressed()){
+            robot.grabber.setPosition(0.5);
+
+        }
+    }
+
+    public static void setStartAngle(){
+        Orientation angles;
+        angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        startAngle = angles.firstAngle;
+    }
+
+    public static void fixHeading(){
+        float heading;
+        Orientation angles;
+        angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        heading = angles.firstAngle;
+
+        while (startAngle < heading){
+            robot.leftDrive.setPower(0.2);
+            robot.rightDrive.setPower(-0.2);
+            angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            heading = angles.firstAngle;
+        }
+        while (startAngle > heading){
+            robot.leftDrive.setPower(-0.2);
+            robot.rightDrive.setPower(0.2);
+            angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            heading = angles.firstAngle;
+        }
     }
 
 }
