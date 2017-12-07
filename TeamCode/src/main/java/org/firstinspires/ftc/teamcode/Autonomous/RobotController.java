@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.robot.Robot;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -16,11 +15,11 @@ import org.firstinspires.ftc.teamcode.Configuration;
 
 public class RobotController {
 
-    private static Autonomoustest autonomous;
+    private static AutonomousOpMode autonomous;
     private static Telemetry telemetry;
     private static Configuration robot;
     
-    public static void RegisterAutonomousController(Autonomoustest _autonomous) {
+    public static void RegisterAutonomousController(AutonomousOpMode _autonomous) {
 
         autonomous = _autonomous;
         telemetry = autonomous.telemetry;
@@ -103,7 +102,8 @@ public class RobotController {
     }
 
     public static int CalcualteDistanceTicks(float distance) {
-        return (int)(10000 * distance);
+        //1000 ticks goes 34cm
+        return (int)(2941 * distance);
     }
 
     public static void driveForward( int distance) {

@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.R;
  */
 
 @Autonomous(name = "Autonomous")
-public class Autonomoustest extends LinearOpMode {
+public class AutonomousOpMode extends LinearOpMode {
     // Declare drive motors
     Configuration robot;
 
@@ -36,16 +36,13 @@ public class Autonomoustest extends LinearOpMode {
 
         robot = new Configuration();
 
-
         robot.init(hardwareMap);
 
         VuforiaInit();
 
-
         RobotInit();
 
         waitForStart();
-
 
         Run1();
 
@@ -90,10 +87,12 @@ public class Autonomoustest extends LinearOpMode {
 
     public void Run1() {
         //True:blue False:red
-        RobotController.Jewel(true);
-//        RobotController.driveForward(0.5f, 1.0f);
-//        RobotController.turn(90, Turn.LEFT);
-//        RobotController.driveForward(0.5f, 1.0f);
+        RobotController.Jewel(false);
+        RobotController.driveForward(-0.3f, -0.38f);
+        RobotController.driveForward(0.3f , 1f);
+        RobotController.driveForward(0.3f,0.55f);
+        RobotController.turn(90, Turn.LEFT);
+        RobotController.driveForward(0.3f, 0.2f);
     }
 
 
