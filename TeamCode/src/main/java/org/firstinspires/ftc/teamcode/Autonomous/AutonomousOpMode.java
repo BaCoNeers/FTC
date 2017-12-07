@@ -25,9 +25,6 @@ public class AutonomousOpMode extends LinearOpMode {
     // Declare drive motors
     Configuration robot;
 
-
-    // Constants for moving arm
-
     /*
     Autonomous entry point
      */
