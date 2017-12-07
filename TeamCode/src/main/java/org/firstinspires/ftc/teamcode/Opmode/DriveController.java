@@ -31,7 +31,13 @@ public class DriveController {
         // Retrieve the power
         double drive_power = gamepad.left_stick_y;
         double turning_power = gamepad.right_stick_x;
-        drive_power -= (-gamepad.left_trigger) + (gamepad.right_trigger);
+        if(drive_power == 0.0) {
+            drive_power -= (-gamepad.left_trigger) + (gamepad.right_trigger);
+        }
+        if(drive_power == 0.0 && turning_power != 0) {
+            drive_power = Math.abs(turning_power);
+        }
+
 
         double scaled_driving_power = Math.abs(Math.pow(drive_power, 2.0)) * Math.signum(drive_power);
         double scaled_turning_power = Math.abs(Math.pow(turning_power, 2.0)) * -Math.signum(turning_power);
