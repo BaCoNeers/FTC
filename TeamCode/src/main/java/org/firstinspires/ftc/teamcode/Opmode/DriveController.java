@@ -20,10 +20,14 @@ public class DriveController {
     public static vec2 GetDriveBias(double drive_power, double turning_power) {
 
         // Bias Settings
-        vec2 clockwise_bias = new vec2(-1,1);
+        vec2 clockwise_bias = new vec2(1,-1);
         vec2 forward_bias = new vec2(1,1);
 
-        vec2 result = vec2.lerp(forward_bias.multiply(1.0 - Math.abs(turning_power)), clockwise_bias, turning_power).normalize().multiply(drive_power);
+        vec2 movement_bias = forward_bias.multiply(1.0 - Math.abs(turning_power));
+
+        vec2 direction = vec2.lerp(forward_bias, clockwise_bias, turning_power);
+
+        vec2 result = direction.multiply(drive_power);
 
         return result;
     }
