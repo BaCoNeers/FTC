@@ -76,6 +76,8 @@ public class Drive extends LinearOpMode {
         Telemetry.Item leftdrivebias = telemetry.addData("Left drive bias" , "%12.3f", 0.0);
         Telemetry.Item rightdrivebias = telemetry.addData("right drive bias" , "%12.3f", 0.0);
 
+        DriveController.SetupTelemetry(telemetry);
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 //        jewel.Jewel(true, robot);
@@ -84,10 +86,10 @@ public class Drive extends LinearOpMode {
 
             vec2 drive_bias = DriveController.GetDriveBias(gamepad1);
 
-            leftdrive.setValue("%12.3f", gamepad1.left_stick_y);
-            rightdrive.setValue("%12.3f",gamepad1.right_stick_x);
-            leftdrivebias.setValue("%12.3f",0.1 * drive_bias.x);
-            rightdrivebias.setValue("%12.3f",0.1 * drive_bias.y);
+            leftdrive.setValue(gamepad1.left_stick_y);
+            rightdrive.setValue(gamepad1.right_stick_x);
+            leftdrivebias.setValue(0.1 * drive_bias.x);
+            rightdrivebias.setValue(0.1 * drive_bias.y);
 
             telemetry.update();
 
