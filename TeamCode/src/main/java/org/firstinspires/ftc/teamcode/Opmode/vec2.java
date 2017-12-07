@@ -54,7 +54,7 @@ public class vec2 {
     }
 
     public vec2 divide(vec2 value) {
-        return new vec2(x *value.x, y * value.y );
+        return new vec2(x /value.x, y / value.y );
     }
 
     public vec2 add(double value) {
@@ -70,7 +70,7 @@ public class vec2 {
     }
 
     public vec2 divide(double value) {
-        return new vec2(x *value, y * value );
+        return new vec2(x /value, y / value );
     }
 
     public vec2 normalize() {
