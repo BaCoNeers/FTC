@@ -46,13 +46,7 @@ public class Drive extends LinearOpMode {
     private boolean toggle = false;
     private boolean toMax = false;
     private boolean toMin = false;
-    private double divider = 1;
-    private double  Forward;
-    private double  Turning;
-    private double  oldTurning;
-    private double oldForward;
-    private boolean leftStickY;
-    private boolean rightStickX;
+    private double multiplier = 1;
     private JewelDrop jewel = new JewelDrop();
 
 
@@ -95,8 +89,10 @@ public class Drive extends LinearOpMode {
             telemetry.update();
 
 
-            robot.leftDrive.setPower(0.25 * drive_bias.x);
-            robot.rightDrive.setPower(0.25 * drive_bias.y);
+            robot.leftDrive.setPower(multiplier * drive_bias.x);
+            robot.rightDrive.setPower(multiplier * drive_bias.y);
+
+
 
 
             //lift
@@ -139,10 +135,7 @@ public class Drive extends LinearOpMode {
             if(!gamepad1.dpad_right && !gamepad2.dpad_left){
                 robot.picker.setPosition(0.5);
             }
-
-            // Drive
-            oldForward = Forward;
-            oldTurning = Turning;
+            
         }
     }
 
