@@ -88,13 +88,13 @@ public class Drive extends LinearOpMode {
 
             leftdrive.setValue(gamepad1.left_stick_y);
             rightdrive.setValue(gamepad1.right_stick_x);
-            leftdrivebias.setValue(0.1 * drive_bias.x);
-            rightdrivebias.setValue(0.1 * drive_bias.y);
+            leftdrivebias.setValue(drive_bias.x);
+            rightdrivebias.setValue(drive_bias.y);
 
             telemetry.update();
 
-            robot.leftDrive.setPower(0.1 * drive_bias.x);
-            robot.rightDrive.setPower(0.1 * drive_bias.y);
+            robot.leftDrive.setPower(0.25 * drive_bias.x);
+            robot.rightDrive.setPower(0.25 * drive_bias.y);
 
 
             //lift
