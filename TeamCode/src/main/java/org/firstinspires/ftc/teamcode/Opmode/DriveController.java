@@ -24,13 +24,18 @@ public class DriveController {
         _direction_y = telemetry.addData("direction_y" , "%12.3f", 0.0);
     }
 
+
+
     public static vec2 GetDriveBias(Gamepad gamepad) {
 
         // Retrieve the power
         double drive_power = gamepad.left_stick_y;
         double turning_power = gamepad.right_stick_x;
 
-        return GetDriveBias(drive_power, turning_power);
+        double scaled_driving_power = Math.abs(Math.pow(drive_power, 2.0)) * Math.signum(drive_power);
+        double scaled_turning_power = Math.abs(Math.pow(drive_power, 2.0)) * Math.signum(drive_power);
+
+        return GetDriveBias(scaled_driving_power, scaled_turning_power);
     }
 
     public static vec2 GetDriveBias(double drive_power, double turning_power) {
