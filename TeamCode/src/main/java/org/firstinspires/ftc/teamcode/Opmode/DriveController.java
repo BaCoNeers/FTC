@@ -37,14 +37,15 @@ public class DriveController {
 
         // Bias Settings
         vec2 clockwise_bias = new vec2(1,-1);
+        vec2 anticlowise_bias = new vec2(-1, 1);
         vec2 forward_bias = new vec2(1,1);
 
-        vec2 movement_bias = forward_bias.multiply(1.0 - Math.abs(turning_power));
+        vec2 rotation_bias = turning_power >= 0.0 ? clockwise_bias : anticlowise_bias;
 
         _drive_power.setValue(drive_power);
         _turning_power.setValue(turning_power);
 
-        vec2 direction = vec2.lerp(forward_bias, clockwise_bias, turning_power);
+        vec2 direction = vec2.lerp(forward_bias, rotation_bias, Math.abs(turning_power));
 
         _direction_x.setValue(direction.x);
         _direction_y.setValue(direction.y);
