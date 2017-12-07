@@ -30,7 +30,8 @@ public class vec2 {
     }
 
     public vec2(double _x, double _y) {
-
+        x = _x;
+        y = _y;
     }
 
     public static vec2 lerp(vec2 a, vec2 b, double amount) {
