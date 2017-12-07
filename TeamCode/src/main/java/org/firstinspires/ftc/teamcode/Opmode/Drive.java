@@ -47,6 +47,7 @@ public class Drive extends LinearOpMode {
     private boolean toMax = false;
     private boolean toMin = false;
     private double multiplier = 1;
+    private boolean lastButtonState = false;
     private JewelDrop jewel = new JewelDrop();
 
 
@@ -88,6 +89,23 @@ public class Drive extends LinearOpMode {
 
             telemetry.update();
 
+
+            //Keep track of gamepad1.x which is just the x button
+            boolean currentButtonState = gamepad1.x;
+            //check if current button state is true and last button state is false
+            //so that it will only because true when you realise the button
+            if (currentButtonState && !lastButtonState) {
+                if (multiplier == 1.0) {
+                    multiplier = 0.3;
+                }
+                else {
+                    multiplier = 1.0;
+                }
+            }
+            //If current button states changed then change last button state
+            if(currentButtonState != lastButtonState){
+                lastButtonState = currentButtonState;
+            }
 
             robot.leftDrive.setPower(multiplier * drive_bias.x);
             robot.rightDrive.setPower(multiplier * drive_bias.y);
