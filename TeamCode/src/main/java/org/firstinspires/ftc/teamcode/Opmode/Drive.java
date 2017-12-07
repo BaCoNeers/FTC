@@ -74,8 +74,7 @@ public class Drive extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            telemetry.log().add("Left drive: %f",(gamepad1.left_stick_y*-1)+gamepad1.right_stick_x);
-            telemetry.log().add("Right drive: %f",(gamepad1.left_stick_y*-1)-gamepad1.right_stick_x);
+            
 
 
             vec2 drive_bias = DriveController.GetDriveBias(gamepad1);
