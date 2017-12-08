@@ -39,7 +39,7 @@ public class AutonomousOpMode extends LinearOpMode {
         //waits for the start button to be pressed
         waitForStart();
         //complete the run
-        Run1();
+        Run4();
 
     }
 
@@ -81,7 +81,7 @@ public class AutonomousOpMode extends LinearOpMode {
         RobotController.closeGrabber();
     }
 
-    public void Run1() {
+    public void Run8() {
         //True:blue False:red
         RobotController.setStartAngle();
         RobotController.moveyUp();
@@ -96,7 +96,7 @@ public class AutonomousOpMode extends LinearOpMode {
         RobotController.driveBackward(0.3f,0.55f);
     }
 
-    public void Run2(){
+    public void Run4(){
 
         RobotController.setStartAngle();
         RobotController.moveyUp();
