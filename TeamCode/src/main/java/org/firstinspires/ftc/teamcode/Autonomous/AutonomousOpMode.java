@@ -30,26 +30,23 @@ public class AutonomousOpMode extends LinearOpMode {
      */
     @Override
     public void runOpMode() throws InterruptedException {
-
+        //sets the configuration of the robot
         robot = new Configuration();
-
+        //initializes the configuration
         robot.init(hardwareMap);
-
+        //calls the Vuforia initialization
         VuforiaInit();
-
+        //initializes the motors
         RobotInit();
-
+        //waits for the start button to be pressed
         waitForStart();
-
-
-
+        //complete the run
         Run1();
 
     }
 
+    //initializes Vuforia with the parameters set
     public void VuforiaInit() {
-
-        // Vuforia image recognition
         VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
         params.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
         params.vuforiaLicenseKey = "AQQN8vT/////AAAAGR2kWcTZSEaGsNmfOFgjVCpfRMD0rrC8iVwL5YiD9FQny/LDfDTPHuZMkS31CZvPgOpu9GPC10zAHbs2om9lY3IZmlQ944EDdEeCFkzTFlN5Fk1/gzwUbMgR1+8qwBy/7FsoQOgXFApTWMRfogt6FqXahm7g0gpfzDiOhAPHgHmMDYL5wqHdBgRdt12rT6FnwePm7H3Z7hcEPh7BwLoD8wFa9mqhDnNkm2czsZLiGgQQGy3bdWY3kq3Hzn6XNDREjq4xk2RmTMWZi6BFDZgFAMaaTT2PdLoF6waMR+o21FW/EHCRd1fJu1fNPSvtyLdwxkUG+JrjVtTBBQGrQ5mHRuZ/Bp0XlHijhW0KEh6/G7lb";
@@ -65,6 +62,7 @@ public class AutonomousOpMode extends LinearOpMode {
         cyper.activate();
     }
 
+    //initilizes robots motors and resets the grabber
     public void RobotInit() {
         robot.leftDrive.resetDeviceConfigurationForOpMode();
         robot.rightDrive.resetDeviceConfigurationForOpMode();
@@ -85,6 +83,7 @@ public class AutonomousOpMode extends LinearOpMode {
         RobotController.closeGrabber();
     }
 
+    //first run
     public void Run1() {
         //True:blue False:red
         RobotController.setStartAngle();

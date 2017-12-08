@@ -19,7 +19,8 @@ public class RobotController {
     private static Telemetry telemetry;
     private static Configuration robot;
     private static float startAngle;
-    
+
+    //gets and sets the robots configuration and telemetry to be used later
     public static void RegisterAutonomousController(AutonomousOpMode _autonomous) {
 
         autonomous = _autonomous;
@@ -28,10 +29,12 @@ public class RobotController {
 
     }
 
+    //set a defult value of tolerance if one is not passed though for the turning function
     public static void turn(float degrestoturn, Turn direction) {
         turn(degrestoturn, direction, 5);
     }
 
+    //turning function
     public static void turn(float degrestoturn, Turn direction, float tolerance) {
 
         Orientation angles;
@@ -41,11 +44,13 @@ public class RobotController {
         Telemetry.Item angItem = telemetry.addData("angle", "%12.3f", 0.0);
         Telemetry.Item teltargetangle = telemetry.addData("target angle", "%12.3f", 0.0);
         telemetry.log().add("in turn");
+        //get the current heading
         angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         heading = angles.firstAngle;
         float offset = 0;
         float targetangle;
         telemetry.log().add("result test: %f", heading - degrestoturn);
+        //work out the target angle according to the direction of turn
         if (direction.equals(Turn.LEFT)) {
             targetangle = heading - degrestoturn;
             telemetry.log().add("target angle: %f", targetangle);
@@ -61,6 +66,7 @@ public class RobotController {
         }
         telemetry.log().add("heading: %f", heading);
         telemetry.log().add("target3: %f", targetangle);
+        //use a offset to counter the issue of the imu going -180 to 180
         if (targetangle > 160) {
             offset = -160;
             targetangle += offset;
@@ -71,8 +77,10 @@ public class RobotController {
         heading += offset;
         int count = 0;
 
+        //work out the difference between the target angle and the current heading and
+        //turn until the difference is 0 + - the tolerance
         float diff = heading - targetangle;
-        while (Math.abs(diff) > tolerance && count < 1000000000) {
+        while (Math.abs(diff) > tolerance && count < 100000) {
             telemetry.log().add("count: %d", count);
             telemetry.log().add("offset: %f", offset);
             telemetry.log().add("diff: %f", diff);
@@ -102,34 +110,36 @@ public class RobotController {
         robot.rightDrive.setPower(0);
     }
 
+    //function to calculate the ticks that corresponds to the distance in meters
     public static int CalcualteDistanceTicks(float distance) {
-        //1000 ticks goes 34cm
+        //2941 ticks goes 1m
         return (int)(2941 * distance);
     }
-
+    //set a defult power for if a power is not entered
     public static void driveForward( int distance) {
         driveForward(1, distance);
     }
 
+    //if amount of ticks isn't entered calculat the amount of ticks and call the drive function
     public static void driveForward( float power, float distance) {
         driveForward(power, CalcualteDistanceTicks(distance));
     }
 
+    //drive forward function
     public static void driveForward( float power, int distance) {
 
 
         boolean reachedmotor1 = false;
         boolean reachedmotor2 = false;
 
+        //reset the encoders and motors
         robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
         robot.leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
         robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
         robot.leftDrive.setPower(-power);
         robot.rightDrive.setPower(-power);
@@ -137,10 +147,9 @@ public class RobotController {
 
         int loopcount = 0;
 
+        //continue to loop until the amount of ticks is reached by each motor
         while (reachedmotor1 == false || reachedmotor2 == false) {
             loopcount++;
-
-
             telemetry.log().add("in loop %d", loopcount);
             telemetry.log().add("current position 1 %d", robot.leftDrive.getCurrentPosition());
             telemetry.log().add("current position 2 %d", robot.rightDrive.getCurrentPosition());
@@ -148,6 +157,7 @@ public class RobotController {
             telemetry.log().add("reached motor 2 : %b", reachedmotor2);
             telemetry.log().add("distance %d", distance);
 
+            //stop each motor independently and say that the motor is stopped when the distance is reached
             if (robot.leftDrive.getCurrentPosition() > distance) {
                 telemetry.log().add("motor2 > distance");
                 robot.leftDrive.setPower(0);
@@ -175,24 +185,24 @@ public class RobotController {
 
 
     }
+
+    //calculate the amount of ticks if not entered
     public static void driveBackward( float power, float distance) {
         driveBackward(power, CalcualteDistanceTicks(distance));
     }
 
+    //drive foward function
     public static void driveBackward( float power, int distance) {
 
 
         boolean reachedmotor1 = false;
         boolean reachedmotor2 = false;
         distance = -distance;
-
+        //reet motors and encoders
         robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
         robot.leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
         robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -202,10 +212,9 @@ public class RobotController {
 
         int loopcount = 0;
 
+        //run until each motor has reached the target distance
         while (reachedmotor1 == false || reachedmotor2 == false) {
             loopcount++;
-
-
             telemetry.log().add("in loop %d", loopcount);
             telemetry.log().add("current position 1 %d", robot.leftDrive.getCurrentPosition());
             telemetry.log().add("current position 2 %d", robot.rightDrive.getCurrentPosition());
@@ -213,6 +222,7 @@ public class RobotController {
             telemetry.log().add("reached motor 2 : %b", reachedmotor2);
             telemetry.log().add("distance %d", distance);
 
+            //stop each motor independently and say that the motor is stopped when the distance is reached
             if (robot.leftDrive.getCurrentPosition() < distance) {
                 telemetry.log().add("motor2 > distance");
                 robot.leftDrive.setPower(0);
@@ -223,8 +233,6 @@ public class RobotController {
                 robot.rightDrive.setPower(0);
                 reachedmotor2 = true;
             }
-
-
         }
         robot.leftDrive.setPower(0);
         robot.rightDrive.setPower(0);
@@ -308,6 +316,7 @@ public class RobotController {
         }
     }
 
+    //open the grabber
     public static void openGrabber(){
         robot.grabber.setPosition(0);
         while(!robot.max.isPressed()){
@@ -315,12 +324,15 @@ public class RobotController {
         }
     }
 
+    //close the grabber
     public static void closeGrabber(){
         robot.grabber.setPosition(1);
         while(!robot.min.isPressed()){
             robot.grabber.setPosition(0.5);
         }
     }
+
+    //move the y motion up a bit
     public static void moveyUp(){
         robot.xmotion.setPower(0.5);
         try {
