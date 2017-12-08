@@ -51,7 +51,7 @@ public class RobotController {
         float targetangle;
         telemetry.log().add("result test: %f", heading - degrestoturn);
         //work out the target angle according to the direction of turn
-        if (direction.equals(Turn.LEFT)) {
+        if (direction.equals(Turn.RIGHT)) {
             targetangle = heading - degrestoturn;
             telemetry.log().add("target angle: %f", targetangle);
             telemetry.log().add("degrestoturn: %f", degrestoturn);
