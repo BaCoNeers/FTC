@@ -114,7 +114,7 @@ public class Drive extends LinearOpMode {
 
             //lift
             robot.ymotion.setPower(gamepad2.right_stick_y * -1);
-            robot.xmotion.setPower(gamepad2.right_stick_x * -1);
+            robot.xmotion.setPower(gamepad2.right_stick_x * 1);
 
             //grabber
             if(gamepad2.left_bumper){
