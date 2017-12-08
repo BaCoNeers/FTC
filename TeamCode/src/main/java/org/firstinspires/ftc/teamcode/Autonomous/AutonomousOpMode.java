@@ -67,8 +67,12 @@ public class AutonomousOpMode extends LinearOpMode {
 
     public void VuforiaCheck() {
         for (int n=0; n < Trackables.length; n++){
-            if (((VuforiaTrackableDefaultListener)Trackables[n].getListener()).isVisible()){
-                telemetry.log().add("Vuforia", Trackables[n].getName());
+            try {
+                if (((VuforiaTrackableDefaultListener) Trackables[n].getListener()).isVisible()) {
+                    telemetry.log().add("Vuforia", Trackables[n].getName());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -103,7 +107,7 @@ public class AutonomousOpMode extends LinearOpMode {
         RobotController.driveBackward(0.3f , 0.6f);
         RobotController.fixHeading();
         RobotController.driveBackward(0.3f,0.55f);
-        RobotController.turn(90, Turn.LEFT);
+        RobotController.turn(90, Turn.RIGHT);
         RobotController.driveForward(0.3f, 0.2f);
         RobotController.openGrabber();
         RobotController.driveBackward(0.3f,0.55f);
@@ -115,20 +119,14 @@ public class AutonomousOpMode extends LinearOpMode {
         RobotController.moveyUp();
         RobotController.Jewel(true);
         RobotController.driveForward(0.3f , 0.6f);
-        RobotController.fixHeading();
-<<<<<<< HEAD
+        //RobotController.fixHeading();
+      // VuforiaCheck();
         RobotController.driveForward(0.3f,0.45f);
-=======
-        VuforiaCheck();
-        RobotController.driveForward(0.3f,0.55f);
->>>>>>> 75bb104be5dc4a13cdd12095418ff7be2f4ea0c3
-        RobotController.turn(90, Turn.LEFT);
+        RobotController.turn(90, Turn.RIGHT);
         RobotController.driveForward(0.3f, 0.2f);
         RobotController.openGrabber();
         RobotController.driveBackward(0.3f,0.55f);
     }
-
-
 
 }
 
