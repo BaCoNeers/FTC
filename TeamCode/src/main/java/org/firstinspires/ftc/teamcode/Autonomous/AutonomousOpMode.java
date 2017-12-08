@@ -2,9 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.vuforia.HINT;
 import com.vuforia.Vuforia;
 
@@ -83,7 +81,6 @@ public class AutonomousOpMode extends LinearOpMode {
         RobotController.closeGrabber();
     }
 
-    //first run
     public void Run1() {
         //True:blue False:red
         RobotController.setStartAngle();
