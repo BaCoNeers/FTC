@@ -48,8 +48,6 @@ public class Drive extends LinearOpMode {
     private boolean toMin = false;
     private double multiplier = 0.8;
     private boolean lastButtonState = false;
-    private MovingAverage leftavg = new MovingAverage(10);
-    private MovingAverage rightavg = new MovingAverage(10);
 
 
 
@@ -75,7 +73,6 @@ public class Drive extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-//        jewel.Jewel(true, robot);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
@@ -92,7 +89,7 @@ public class Drive extends LinearOpMode {
             //check if current button state is true and last button state is false
             //so that it will only because true when you realise the button
             if (currentButtonState && !lastButtonState) {
-                if (multiplier == 1.0) {
+                if (multiplier == 0.8) {
                     multiplier = 0.2;
                 }
                 else {
