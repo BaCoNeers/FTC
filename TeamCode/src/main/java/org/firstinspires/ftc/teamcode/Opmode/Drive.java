@@ -43,7 +43,6 @@ public class Drive extends LinearOpMode {
 
     /* Declare OpMode members. */
     private Configuration robot           = new Configuration();   // Use a Pushbot's hardware
-    private boolean toggle = false;
     private boolean toMax = false;
     private boolean toMin = false;
     private double multiplier = 0.8;
@@ -114,7 +113,7 @@ public class Drive extends LinearOpMode {
             robot.xmotion.setPower(gamepad2.right_stick_x * -1);
 
             //grabber
-            if(gamepad2.left_bumper){
+            if(gamepad2.right_bumper){
                 toMax = true;
             }
             if (toMax){
@@ -124,7 +123,7 @@ public class Drive extends LinearOpMode {
                     toMax = false;
                 }
             }
-            if(gamepad2.right_bumper){
+            if(gamepad2.left_bumper){
                 toMin = true;
             }
             if(toMin){
@@ -146,7 +145,7 @@ public class Drive extends LinearOpMode {
             if(gamepad1.dpad_right){
                 robot.picker.setPosition(1);
             }
-            if(!gamepad1.dpad_right && !gamepad2.dpad_left){
+            if(!gamepad1.dpad_right && !gamepad1.dpad_left){
                 robot.picker.setPosition(0.5);
             }
             
