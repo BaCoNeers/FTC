@@ -10,6 +10,8 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.Configuration;
 import org.firstinspires.ftc.teamcode.R;
@@ -43,6 +45,7 @@ public class AutonomousOpMode extends LinearOpMode {
 
     }
 
+    public VuforiaTrackable Trackables[]=new VuforiaTrackable[3];
     //initializes Vuforia with the parameters set
     public void VuforiaInit() {
         VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
@@ -55,9 +58,19 @@ public class AutonomousOpMode extends LinearOpMode {
 
         VuforiaTrackables cyper = vuforia.loadTrackablesFromAsset("RelicVuMark");
         for (int i=0; i< cyper.size();i++) {
-            cyper.get(i).setName(Integer.toString(i));
+            Trackables[i] = cyper.get(i);
+            Trackables[i].setName(Integer.toString(i));
         }
         cyper.activate();
+
+    }
+
+    public void VuforiaCheck() {
+        for (int n=0; n < Trackables.length; n++){
+            if (((VuforiaTrackableDefaultListener)Trackables[n].getListener()).isVisible()){
+                telemetry.log().add("Vuforia", Trackables[n].getName());
+            }
+        }
     }
 
     //initilizes robots motors and resets the grabber
@@ -103,18 +116,17 @@ public class AutonomousOpMode extends LinearOpMode {
         RobotController.Jewel(true);
         RobotController.driveForward(0.3f , 0.6f);
         RobotController.fixHeading();
+<<<<<<< HEAD
         RobotController.driveForward(0.3f,0.45f);
+=======
+        VuforiaCheck();
+        RobotController.driveForward(0.3f,0.55f);
+>>>>>>> 75bb104be5dc4a13cdd12095418ff7be2f4ea0c3
         RobotController.turn(90, Turn.LEFT);
         RobotController.driveForward(0.3f, 0.2f);
         RobotController.openGrabber();
         RobotController.driveBackward(0.3f,0.55f);
     }
-
-
-
-
-
-
 
 
 
