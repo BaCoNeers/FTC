@@ -143,7 +143,7 @@ public class Drive extends LinearOpMode {
             if(gamepad2.a){
                 robot.extentionUp.setPower(-1);
             }
-            if(!gamepad2.y || !gamepad2.a){
+            if(!gamepad2.y && !gamepad2.a){
                 robot.extentionUp.setPower(0);
             }
            robot.extentionCross.setPower(gamepad2.left_stick_x);
