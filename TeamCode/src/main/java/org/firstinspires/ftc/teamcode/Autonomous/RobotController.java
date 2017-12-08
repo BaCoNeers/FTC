@@ -318,7 +318,7 @@ public class RobotController {
 
     //open the grabber
     public static void openGrabber(){
-        while(!robot.min.isPressed()){
+        while(!robot.max.isPressed()){
             robot.grabber.setPosition(0);
         }
         robot.grabber.setPosition(0.5);
