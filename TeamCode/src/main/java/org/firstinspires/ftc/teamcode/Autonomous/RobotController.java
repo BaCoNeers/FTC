@@ -335,12 +335,12 @@ public class RobotController {
 
     //move the y motion up a bit
     public static void moveyUp(){
-        robot.xmotion.setPower(0.5);
+        robot.ymotion.setPower(0.5);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        robot.xmotion.setPower(0);
+        robot.ymotion.setPower(0);
     }
 }
