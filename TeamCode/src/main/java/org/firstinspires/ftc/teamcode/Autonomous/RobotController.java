@@ -318,18 +318,19 @@ public class RobotController {
 
     //open the grabber
     public static void openGrabber(){
-        robot.grabber.setPosition(0);
-        while(!robot.max.isPressed()){
-            robot.grabber.setPosition(0.5);
+        while(!robot.min.isPressed()){
+            robot.grabber.setPosition(0);
         }
+        robot.grabber.setPosition(0.5);
     }
 
     //close the grabber
     public static void closeGrabber(){
-        robot.grabber.setPosition(1);
+
         while(!robot.min.isPressed()){
-            robot.grabber.setPosition(0.5);
+            robot.grabber.setPosition(1);
         }
+        robot.grabber.setPosition(0.5);
     }
 
     //move the y motion up a bit
