@@ -109,8 +109,8 @@ public class Drive extends LinearOpMode {
 
 
             //lift
-            robot.ymotion.setPower(gamepad2.right_stick_y * -1);
-            robot.xmotion.setPower(gamepad2.right_stick_x * -1);
+            robot.ymotion.setPower(gamepad2.left_stick_y * -1);
+            robot.xmotion.setPower(gamepad2.left_stick_x * -1);
 
             //grabber
             if(gamepad2.right_bumper){
@@ -137,7 +137,15 @@ public class Drive extends LinearOpMode {
 
 
 //            //extendor
-           robot.extentionUp.setPower(gamepad2.left_stick_y);
+            if(gamepad2.y){
+                robot.extentionUp.setPower(1);
+            }
+            if(gamepad2.a){
+                robot.extentionUp.setPower(-1);
+            }
+            if(!gamepad2.y || !gamepad2.a){
+                robot.extentionUp.setPower(0);
+            }
            robot.extentionCross.setPower(gamepad2.left_stick_x);
             if (gamepad1.dpad_left){
                 robot.picker.setPosition(0);
