@@ -46,8 +46,11 @@ public class Drive extends LinearOpMode {
     private boolean toggle = false;
     private boolean toMax = false;
     private boolean toMin = false;
-    private double multiplier = 1;
+    private double multiplier = 0.8;
     private boolean lastButtonState = false;
+    private MovingAverage leftavg = new MovingAverage(10);
+    private MovingAverage rightavg = new MovingAverage(10);
+
 
 
 
@@ -65,10 +68,8 @@ public class Drive extends LinearOpMode {
         telemetry.update();
 
         telemetry.setAutoClear(false);
-        Telemetry.Item leftdrive = telemetry.addData("left gamepad" , "%12.3f", 0.0);
-        Telemetry.Item rightdrive = telemetry.addData("right gamepad" , "%12.3f", 0.0);
-        Telemetry.Item leftdrivebias = telemetry.addData("Left drive bias" , "%12.3f", 0.0);
-        Telemetry.Item rightdrivebias = telemetry.addData("right drive bias" , "%12.3f", 0.0);
+        Telemetry.Item toggel = telemetry.addData("Toggel" , "%12.3f", 0.0);
+
 
         DriveController.SetupTelemetry(telemetry);
 
@@ -80,34 +81,34 @@ public class Drive extends LinearOpMode {
 
             vec2 drive_bias = DriveController.GetDriveBias(gamepad1);
 
-            leftdrive.setValue(gamepad1.left_stick_y);
-            rightdrive.setValue(gamepad1.right_stick_x);
+            toggel.setValue(multiplier);
 
-            leftdrivebias.setValue(drive_bias.x);
 
             telemetry.update();
 
 //
 //            //Keep track of gamepad1.x which is just the x button
-//            boolean currentButtonState = gamepad1.x;
-//            //check if current button state is true and last button state is false
-//            //so that it will only because true when you realise the button
-//            if (currentButtonState && !lastButtonState) {
-//                if (multiplier == 1.0) {
-//                    multiplier = 0.3;
-//                }
-//                else {
-//                    multiplier = 1.0;
-//                }
-//            }
-//            //If current button states changed then change last button state
-//            if(currentButtonState != lastButtonState){
-//                lastButtonState = currentButtonState;
-//            }
-//
-            robot.leftDrive.setPower(drive_bias.x);
-            robot.rightDrive.setPower(-drive_bias.y);
+            boolean currentButtonState = gamepad1.x;
+            //check if current button state is true and last button state is false
+            //so that it will only because true when you realise the button
+            if (currentButtonState && !lastButtonState) {
+                if (multiplier == 1.0) {
+                    multiplier = 0.2;
+                }
+                else {
+                    multiplier = 0.8;
+                }
+            }
+            //If current button states changed then change last button state
+            if(currentButtonState != lastButtonState){
+                lastButtonState = currentButtonState;
+            }
 
+//            robot.leftDrive.setPower((drive_bias.x)*multiplier);
+//            robot.rightDrive.setPower(  (-drive_bias.y)*multiplier);
+
+            robot.leftDrive.setPower(((gamepad1.right_trigger-gamepad1.left_trigger)*-1-gamepad1.right_stick_x)*multiplier);
+            robot.rightDrive.setPower(((gamepad1.right_trigger-gamepad1.left_trigger)*1-gamepad1.right_stick_x)*multiplier);
 
 
 
