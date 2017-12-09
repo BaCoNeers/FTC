@@ -35,11 +35,11 @@ public class AutonomousOpMode extends LinearOpMode {
         //initializes the configuration
         robot.init(hardwareMap);
         //calls the Vuforia initialization
-        VuforiaInit();
+        //VuforiaInit();
         //initializes the motors
         RobotInit();
-        robot.push.setPosition(0.42);
-        robot.drop.setPosition(0.3);
+        robot.push.setPosition(0.4);
+        robot.drop.setPosition(0);
         //waits for the start button to be pressed
         waitForStart();
         //complete the run
@@ -163,7 +163,7 @@ public class AutonomousOpMode extends LinearOpMode {
         RobotController.setStartAngle();
         RobotController.moveyUp();
         RobotController.Jewel(true);
-        RobotController.driveForward(0.3f, 0.3f);
+        RobotController.driveForward(0.3f, 0.32f);
         RobotController.turn(45, Turn.RIGHT);
         RobotController.driveForward(0.3f, 0.4f);
         RobotController.openGrabber();
