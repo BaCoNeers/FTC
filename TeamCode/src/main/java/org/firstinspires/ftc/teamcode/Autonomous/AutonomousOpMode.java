@@ -43,7 +43,9 @@ public class AutonomousOpMode extends LinearOpMode {
         //waits for the start button to be pressed
         waitForStart();
         //complete the run
-        run6();
+        if (opModeIsActive()) {
+            run6();
+        }
 
     }
 
@@ -163,7 +165,7 @@ public class AutonomousOpMode extends LinearOpMode {
         RobotController.setStartAngle();
         RobotController.moveyUp();
         RobotController.Jewel(true);
-        RobotController.driveForward(0.3f, 0.32f);
+        RobotController.driveForward(0.3f, 0.36f);
         RobotController.turn(45, Turn.RIGHT);
         RobotController.driveForward(0.3f, 0.4f);
         RobotController.openGrabber();
