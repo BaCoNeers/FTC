@@ -21,7 +21,7 @@ public class RobotController {
     private static float startAngle;
 
     //gets and sets the robots configuration and telemetry to be used later
-    public static void RegisterAutonomousController(AutonomousOpMode _autonomous) {
+    public static void RegisterAutonomousController(LinearOpMode _autonomous) {
 
         program = _autonomous;
         telemetry = program.telemetry;
@@ -29,7 +29,7 @@ public class RobotController {
 
     }
 
-    public static void RegisterJewelController(Jewelopmode _jewel) {
+    public static void RegisterJewelController(LinearOpMode _jewel) {
 
         program = _jewel;
         telemetry = _jewel.telemetry;
