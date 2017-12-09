@@ -130,6 +130,10 @@ public class AutonomousOpMode extends LinearOpMode {
         RobotController.driveForward(0.3f,0.2f);
     }
 
+    public void testImu(){
+        RobotController.turn(90, Turn.RIGHT);
+    }
+
 }
 
 
