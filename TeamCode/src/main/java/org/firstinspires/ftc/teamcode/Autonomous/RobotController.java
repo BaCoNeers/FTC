@@ -46,8 +46,11 @@ public class RobotController {
         Telemetry.Item teltargetangle = telemetry.addData("target angle", "%12.3f", 0.0);
         telemetry.log().add("in turn");
         //get the current heading
+        //Get all angles of IMU
         angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        //Get x angle
         heading = angles.firstAngle;
+        //Gets offset
         float offset = 0;
         float targetangle;
         telemetry.log().add("result test: %f", heading - degrestoturn);
@@ -258,21 +261,18 @@ public class RobotController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        if (robot.drop.getPosition() == 1 && (robot.Colour.blue() > 0 || robot.Colour.red() > 0)) {
-            //check for which ball were looking for and change position accordingly
-            if (toggle) {
-                if (robot.Colour.blue() > robot.Colour.red()) {
-                    robot.push.setPosition(1);
-                } else {
-                    robot.push.setPosition(0);
-                }
+        //check for which ball were looking for and change position accordingly
+        if (toggle) {
+            if (robot.Colour.blue() > robot.Colour.red()) {
+                robot.push.setPosition(1);
             } else {
-                if (robot.Colour.red() > robot.Colour.blue()) {
-                    robot.push.setPosition(1);
-                } else {
-                    robot.push.setPosition(0);
-                }
+                robot.push.setPosition(0);
+            }
+        } else {
+            if (robot.Colour.red() > robot.Colour.blue()) {
+                robot.push.setPosition(1);
+            } else {
+                robot.push.setPosition(0);
             }
         }
         //wait for the ball to be knocked of
