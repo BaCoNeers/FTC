@@ -109,11 +109,19 @@ public class Drive extends LinearOpMode {
 
 
             //lift
-            robot.ymotion.setPower(gamepad2.left_stick_y * -1);
+            if(gamepad2.dpad_up){
+                robot.ymotion.setPower(1);
+            }
+            if(gamepad2.dpad_down){
+                robot.ymotion.setPower(-1);
+            }
+            if(!gamepad2.dpad_up && !gamepad2.dpad_down){
+                robot.ymotion.setPower(0);
+            }
             robot.xmotion.setPower(gamepad2.left_stick_x * -1);
 
             //grabber
-            if(gamepad2.right_bumper){
+            if((gamepad2.right_bumper && !gamepad2.left_bumper)&&!toMin){
                 toMax = true;
             }
             if (toMax){
@@ -123,7 +131,7 @@ public class Drive extends LinearOpMode {
                     toMax = false;
                 }
             }
-            if(gamepad2.left_bumper){
+            if((gamepad2.left_bumper && gamepad2.right_bumper)&&!toMax){
                 toMin = true;
             }
             if(toMin){
@@ -138,15 +146,15 @@ public class Drive extends LinearOpMode {
 
 //            //extendor
             if(gamepad2.y){
-                robot.extentionUp.setPower(1);
-            }
-            if(gamepad2.a){
                 robot.extentionUp.setPower(-1);
             }
-            if(!gamepad2.y || !gamepad2.a){
+            if(gamepad2.a){
+                robot.extentionUp.setPower(1);
+            }
+            if(!gamepad2.y && !gamepad2.a){
                 robot.extentionUp.setPower(0);
             }
-           robot.extentionCross.setPower(gamepad2.left_stick_x);
+           robot.extentionCross.setPower(gamepad2.right_stick_x*-1);
             if (gamepad1.dpad_left){
                 robot.picker.setPosition(0);
             }
