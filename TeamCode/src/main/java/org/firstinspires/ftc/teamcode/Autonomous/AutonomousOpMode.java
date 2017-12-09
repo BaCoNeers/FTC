@@ -104,30 +104,32 @@ public class AutonomousOpMode extends LinearOpMode {
         RobotController.moveyUp();
         RobotController.Jewel(false);
        // RobotController.driveForward(0.3f, 0.1f);
-        RobotController.driveBackward(0.3f , 0.6f);
+        RobotController.driveBackward(0.3f , 0.3f);
         RobotController.fixHeading();
-        RobotController.driveBackward(0.3f,0.55f);
+        RobotController.driveBackward(0.3f,0.5f);
         RobotController.turn(90, Turn.RIGHT);
-        RobotController.driveForward(0.3f, 0.2f);
+        RobotController.driveForward(0.3f, 0.25f);
         RobotController.openGrabber();
-        RobotController.driveBackward(0.3f,0.55f);
+        RobotController.driveBackward(0.3f,0.25f);
+        RobotController.driveForward(0.3f,0.25f);
     }
 
     public void Run4(){
-
-        RobotController.setStartAngle();
-        RobotController.moveyUp();
+        RobotController.moveservo();
+        //RobotController.setStartAngle();
+        //RobotController.moveyUp();
         RobotController.Jewel(true);
+        RobotController.turn(35,Turn.RIGHT);
         RobotController.driveForward(0.3f , 0.3f);
         //RobotController.fixHeading();
-       VuforiaCheck();
-       RobotController.driveForward(0.3f, 0.5f);
+       //VuforiaCheck();
+       //RobotController.driveForward(0.3f, 0.5f);
 
-        RobotController.turn(90, Turn.RIGHT);
-        RobotController.driveForward(0.3f, 0.1f);
+       // RobotController.turn(90, Turn.RIGHT);
+        //RobotController.driveForward(0.3f, 0.1f);
         RobotController.openGrabber();
-        RobotController.driveBackward(0.3f,0.25f);
-        RobotController.driveForward(0.3f,0.2f);
+        //RobotController.driveBackward(0.3f,0.25f);
+        //RobotController.driveForward(0.3f,0.2f);
     }
 
     public void testImu(){

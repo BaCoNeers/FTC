@@ -344,4 +344,14 @@ public class RobotController {
         robot.ymotion.setPower(0);
     }
 
+    public static void moveservo(){
+        robot.push.setPosition(0.45);
+        robot.drop.setPosition(0.3);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
