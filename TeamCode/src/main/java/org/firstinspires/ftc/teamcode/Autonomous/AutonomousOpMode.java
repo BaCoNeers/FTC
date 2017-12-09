@@ -41,7 +41,7 @@ public class AutonomousOpMode extends LinearOpMode {
         //waits for the start button to be pressed
         waitForStart();
         //complete the run
-        Run4();
+        Run2();
 
     }
 
@@ -122,17 +122,34 @@ public class AutonomousOpMode extends LinearOpMode {
         //RobotController.fixHeading();
        VuforiaCheck();
        RobotController.driveForward(0.3f, 0.5f);
-
         RobotController.turn(90, Turn.RIGHT);
         RobotController.driveForward(0.3f, 0.1f);
         RobotController.openGrabber();
         RobotController.driveBackward(0.3f,0.25f);
         RobotController.driveForward(0.3f,0.2f);
     }
+    public void Run2(){
+
+        RobotController.setStartAngle();
+        RobotController.moveyUp();
+        RobotController.Jewel(false);
+        RobotController.driveBackward(0.3f , 0.3f);
+        RobotController.fixHeading();
+        //VuforiaCheck();
+        RobotController.driveBackward(0.3f, 0.5f);
+        RobotController.turn(90, Turn.RIGHT);
+        RobotController.driveForward(0.3f, 0.3f);
+        RobotController.openGrabber();
+        RobotController.driveBackward(0.3f,0.25f);
+        RobotController.driveForward(0.3f,0.25f);
+    }
 
     public void testImu(){
         RobotController.turn(90, Turn.RIGHT);
     }
+
+
+
 
 }
 

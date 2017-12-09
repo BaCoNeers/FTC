@@ -134,7 +134,7 @@ public class Configuration
 
         picker.setPosition(0.5);
         grabber.setPosition(0.5);
-        push.setPosition(0.45);
+        push.setPosition(0.42);
         drop.setPosition(0.3);
         Colour.enableLed(true);
 

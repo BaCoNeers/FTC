@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -14,8 +15,7 @@ import org.firstinspires.ftc.teamcode.Configuration;
  */
 
 public class RobotController {
-
-    private static AutonomousOpMode autonomous;
+    private static LinearOpMode program;
     private static Telemetry telemetry;
     private static Configuration robot;
     private static float startAngle;
@@ -23,9 +23,17 @@ public class RobotController {
     //gets and sets the robots configuration and telemetry to be used later
     public static void RegisterAutonomousController(AutonomousOpMode _autonomous) {
 
-        autonomous = _autonomous;
-        telemetry = autonomous.telemetry;
-        robot = autonomous.robot;
+        program = _autonomous;
+        telemetry = program.telemetry;
+        robot = _autonomous.robot;
+
+    }
+
+    public static void RegisterJewelController(Jewelopmode _jewel) {
+
+        program = _jewel;
+        telemetry = _jewel.telemetry;
+        robot = _jewel.robot;
 
     }
 

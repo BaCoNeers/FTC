@@ -20,8 +20,8 @@ import org.firstinspires.ftc.teamcode.R;
  * Autonomous program being used for test
  */
 
-@Autonomous(name = "Autonomous")
-public class Run1 extends LinearOpMode {
+@Autonomous(name = "Just Jewel")
+public class Jewelopmode extends LinearOpMode {
     // Declare drive motors
     Configuration robot;
 
@@ -41,7 +41,7 @@ public class Run1 extends LinearOpMode {
         //waits for the start button to be pressed
         waitForStart();
         //complete the run
-        Run4();
+        jewelrun();
 
     }
 
@@ -94,7 +94,7 @@ public class Run1 extends LinearOpMode {
 
         telemetry.log().add("before wait for start");
 
-        RobotController.RegisterAutonomousController(this);
+        RobotController.RegisterJewelController(this);
         RobotController.closeGrabber();
     }
 
@@ -120,9 +120,8 @@ public class Run1 extends LinearOpMode {
         RobotController.Jewel(true);
         RobotController.driveForward(0.3f , 0.3f);
         //RobotController.fixHeading();
-       //VuforiaCheck();
+       VuforiaCheck();
        RobotController.driveForward(0.3f, 0.5f);
-
         RobotController.turn(90, Turn.RIGHT);
         RobotController.driveForward(0.3f, 0.1f);
         RobotController.openGrabber();
@@ -130,10 +129,11 @@ public class Run1 extends LinearOpMode {
         RobotController.driveForward(0.3f,0.2f);
     }
 
-    public void Run1(){
-        RobotController.Jewel(true);
+    public void testImu(){
+        RobotController.turn(90, Turn.RIGHT);
     }
-    public void Run2(){
+
+    public void jewelrun(){
         RobotController.Jewel(false);
     }
 
