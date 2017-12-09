@@ -38,6 +38,8 @@ public class AutonomousOpMode extends LinearOpMode {
         VuforiaInit();
         //initializes the motors
         RobotInit();
+        robot.push.setPosition(0.42);
+        robot.drop.setPosition(0.3);
         //waits for the start button to be pressed
         waitForStart();
         //complete the run
@@ -45,7 +47,8 @@ public class AutonomousOpMode extends LinearOpMode {
 
     }
 
-    public VuforiaTrackable Trackables[]=new VuforiaTrackable[3];
+    public VuforiaTrackable Trackables[] = new VuforiaTrackable[3];
+
     //initializes Vuforia with the parameters set
     public void VuforiaInit() {
         VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
@@ -57,7 +60,7 @@ public class AutonomousOpMode extends LinearOpMode {
         Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4);
 
         VuforiaTrackables cyper = vuforia.loadTrackablesFromAsset("RelicVuMark");
-        for (int i=0; i< cyper.size();i++) {
+        for (int i = 0; i < cyper.size(); i++) {
             Trackables[i] = cyper.get(i);
             Trackables[i].setName(Integer.toString(i));
         }
@@ -66,7 +69,7 @@ public class AutonomousOpMode extends LinearOpMode {
     }
 
     public void VuforiaCheck() {
-        for (int n=0; n < Trackables.length; n++){
+        for (int n = 0; n < Trackables.length; n++) {
             try {
                 if (((VuforiaTrackableDefaultListener) Trackables[n].getListener()).isVisible()) {
                     telemetry.log().add("Vuforia", Trackables[n].getName());
@@ -93,7 +96,7 @@ public class AutonomousOpMode extends LinearOpMode {
 
 
         telemetry.log().add("before wait for start");
-        
+
         RobotController.RegisterAutonomousController(this);
         RobotController.closeGrabber();
     }
@@ -103,70 +106,69 @@ public class AutonomousOpMode extends LinearOpMode {
         RobotController.setStartAngle();
         RobotController.moveyUp();
         RobotController.Jewel(false);
-       // RobotController.driveForward(0.3f, 0.1f);
-        RobotController.driveBackward(0.3f , 0.3f);
+        // RobotController.driveForward(0.3f, 0.1f);
+        RobotController.driveBackward(0.3f, 0.3f);
         RobotController.fixHeading();
-        RobotController.driveBackward(0.3f,0.5f);
+        RobotController.driveBackward(0.3f, 0.5f);
         RobotController.turn(90, Turn.RIGHT);
         RobotController.driveForward(0.3f, 0.25f);
         RobotController.openGrabber();
-        RobotController.driveBackward(0.3f,0.25f);
-        RobotController.driveForward(0.3f,0.25f);
+        RobotController.driveBackward(0.3f, 0.25f);
+        RobotController.driveForward(0.3f, 0.25f);
     }
 
-    public void Run4(){
+    public void Run4() {
         RobotController.moveservo();
         RobotController.setStartAngle();
         RobotController.moveyUp();
         RobotController.Jewel(true);
-        RobotController.driveForward(0.3f , 0.3f);
+        RobotController.driveForward(0.3f, 0.3f);
         //RobotController.fixHeading();
-       VuforiaCheck();
-       RobotController.driveForward(0.3f, 0.5f);
-        RobotController.driveBackward(0.3f,0.3f);
+        VuforiaCheck();
+        RobotController.driveForward(0.3f, 0.5f);
+        RobotController.driveBackward(0.3f, 0.3f);
 
         RobotController.fixHeading();
-       //VuforiaCheck();
-       RobotController.driveBackward(0.3f, 0.5f);
+        //VuforiaCheck();
+        RobotController.driveBackward(0.3f, 0.5f);
 
         RobotController.turn(90, Turn.RIGHT);
         RobotController.driveForward(0.3f, 0.1f);
         RobotController.openGrabber();
-        RobotController.driveBackward(0.3f,0.25f);
-        RobotController.driveForward(0.3f,0.25f);
+        RobotController.driveBackward(0.3f, 0.25f);
+        RobotController.driveForward(0.3f, 0.25f);
     }
-    public void Run2(){
+
+    public void Run2() {
 
         RobotController.setStartAngle();
         RobotController.moveyUp();
         RobotController.Jewel(false);
-        RobotController.driveBackward(0.3f , 0.3f);
+        RobotController.driveBackward(0.3f, 0.3f);
         RobotController.fixHeading();
         //VuforiaCheck();
         RobotController.driveBackward(0.3f, 0.5f);
         RobotController.turn(90, Turn.RIGHT);
         RobotController.driveForward(0.3f, 0.3f);
         RobotController.openGrabber();
-        RobotController.driveBackward(0.3f,0.25f);
-        RobotController.driveForward(0.3f,0.25f);
+        RobotController.driveBackward(0.3f, 0.25f);
+        RobotController.driveForward(0.3f, 0.25f);
     }
 
-    public void testImu(){
+    public void testImu() {
         RobotController.turn(90, Turn.RIGHT);
     }
 
-    public void run6(){
+    public void run6() {
         RobotController.setStartAngle();
         RobotController.moveyUp();
         RobotController.Jewel(true);
         RobotController.driveForward(0.3f, 0.3f);
-        RobotController.turn(45,Turn.RIGHT);
-        RobotController.driveForward(0.3f,0.45f);
+        RobotController.turn(45, Turn.RIGHT);
+        RobotController.driveForward(0.3f, 0.4f);
         RobotController.openGrabber();
-        RobotController.driveBackward(0.3f,0.1f);
+        RobotController.driveBackward(0.3f, 0.1f);
     }
-
-
 
 
 }

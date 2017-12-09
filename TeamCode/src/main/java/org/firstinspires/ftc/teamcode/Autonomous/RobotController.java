@@ -114,20 +114,21 @@ public class RobotController {
     //function to calculate the ticks that corresponds to the distance in meters
     public static int CalcualteDistanceTicks(float distance) {
         //2941 ticks goes 1m
-        return (int)(2941 * distance);
+        return (int) (2941 * distance);
     }
+
     //set a defult power for if a power is not entered
-    public static void driveForward( int distance) {
+    public static void driveForward(int distance) {
         driveForward(1, distance);
     }
 
     //if amount of ticks isn't entered calculat the amount of ticks and call the drive function
-    public static void driveForward( float power, float distance) {
+    public static void driveForward(float power, float distance) {
         driveForward(power, CalcualteDistanceTicks(distance));
     }
 
     //drive forward function
-    public static void driveForward( float power, int distance) {
+    public static void driveForward(float power, int distance) {
 
 
         boolean reachedmotor1 = false;
@@ -188,12 +189,12 @@ public class RobotController {
     }
 
     //calculate the amount of ticks if not entered
-    public static void driveBackward( float power, float distance) {
+    public static void driveBackward(float power, float distance) {
         driveBackward(power, CalcualteDistanceTicks(distance));
     }
 
     //drive foward function
-    public static void driveBackward( float power, int distance) {
+    public static void driveBackward(float power, int distance) {
 
 
         boolean reachedmotor1 = false;
@@ -249,8 +250,9 @@ public class RobotController {
 
 
     }
+
     //jewel drop
-    public static void Jewel( boolean toggle) {
+    public static void Jewel(boolean toggle) {
         // lower the arm and wait a second
         robot.drop.setPosition(1);
         try {
@@ -289,27 +291,27 @@ public class RobotController {
     }
 
     //function to set the starting angle
-    public static void setStartAngle(){
+    public static void setStartAngle() {
         Orientation angles;
         angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         startAngle = angles.firstAngle;
     }
 
     //function to fix the heading issue
-    public static void fixHeading(){
+    public static void fixHeading() {
         float heading;
         Orientation angles;
         angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         heading = angles.firstAngle;
-        telemetry.log().add("heading%f" , heading);
+        telemetry.log().add("heading%f", heading);
 
-        while (startAngle < heading){
+        while (startAngle < heading) {
             robot.leftDrive.setPower(-0.2);
             robot.rightDrive.setPower(0.2);
             angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             heading = angles.firstAngle;
         }
-        while (startAngle > heading){
+        while (startAngle > heading) {
             robot.leftDrive.setPower(0.2);
             robot.rightDrive.setPower(-0.2);
             angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -318,24 +320,24 @@ public class RobotController {
     }
 
     //open the grabber
-    public static void openGrabber(){
-        while(!robot.max.isPressed()){
+    public static void openGrabber() {
+        while (!robot.max.isPressed()) {
             robot.grabber.setPosition(0);
         }
         robot.grabber.setPosition(0.5);
     }
 
     //close the grabber
-    public static void closeGrabber(){
+    public static void closeGrabber() {
 
-        while(!robot.min.isPressed()){
+        while (!robot.min.isPressed()) {
             robot.grabber.setPosition(1);
         }
         robot.grabber.setPosition(0.5);
     }
 
     //move the y motion up a bit
-    public static void moveyUp(){
+    public static void moveyUp() {
         robot.ymotion.setPower(0.5);
         try {
             Thread.sleep(1000);
@@ -345,7 +347,7 @@ public class RobotController {
         robot.ymotion.setPower(0);
     }
 
-    public static void moveservo(){
+    public static void moveservo() {
         robot.push.setPosition(0.45);
         robot.drop.setPosition(0.3);
         try {

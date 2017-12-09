@@ -40,45 +40,43 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 /**
  * This is NOT an opmode.
- *
+ * <p>
  * This class can be used to define all the specific hardware for a single robot.
  * In this case that robot is a Pushbot.
  * See PushbotTeleopTank_Iterative and others classes starting with "Pushbot" for usage examples.
- *
+ * <p>
  * This hardware class assumes the following device names have been configured on the robot:
  * Note:  All names are lower case and some have single spaces between words.
- *
+ * <p>
  * Motor channel:  Left  drive motor:        "left_drive"
  * Motor channel:  Right drive motor:        "right_drive"
  * Motor channel:  Manipulator drive motor:  "left_arm"
  * Servo channel:  Servo to open left claw:  "left_hand"
  * Servo channel:  Servo to open right claw: "right_hand"
  */
-public class Configuration
-{
+public class Configuration {
     /* Public OpMode members. */
-    public DcMotor  leftDrive   = null;
-    public DcMotor  rightDrive  = null;
-    public DcMotor  xmotion     = null;
-    public DcMotor  ymotion     = null;
-    public Servo    push        = null;
-    public Servo    drop        = null;
+    public DcMotor leftDrive = null;
+    public DcMotor rightDrive = null;
+    public DcMotor xmotion = null;
+    public DcMotor ymotion = null;
+    public Servo push = null;
+    public Servo drop = null;
     public ColorSensor Colour;
-    public Servo    grabber     = null;
-    public TouchSensor  max   = null;
-    public TouchSensor  min   = null;
-    public DcMotor    extentionUp   = null;
-    public DcMotor    extentionCross  = null;
-    public Servo    picker      = null;
+    public Servo grabber = null;
+    public TouchSensor max = null;
+    public TouchSensor min = null;
+    public DcMotor extentionUp = null;
+    public DcMotor extentionCross = null;
+    public Servo picker = null;
     public BNO055IMU imu = null;
 
 
-
     /* local OpMode members. */
-    HardwareMap hwMap =  null;
+    HardwareMap hwMap = null;
 
     /* Constructor */
-    public Configuration(){
+    public Configuration() {
 
     }
 
@@ -89,7 +87,7 @@ public class Configuration
 
         // Define and Initialize Motors
         //Motor drive
-        leftDrive  = hwMap.get(DcMotor.class, "leftdrive");
+        leftDrive = hwMap.get(DcMotor.class, "leftdrive");
         rightDrive = hwMap.get(DcMotor.class, "rightdrive");
 
 
@@ -98,7 +96,7 @@ public class Configuration
         ymotion = hwMap.get(DcMotor.class, "ymotion");
 
         //grabber
-        grabber = hwMap.get(Servo.class,"grabber");
+        grabber = hwMap.get(Servo.class, "grabber");
         max = hwMap.touchSensor.get("max");
         min = hwMap.touchSensor.get("min");
 
@@ -110,7 +108,7 @@ public class Configuration
         //extendor
         extentionUp = hwMap.get(DcMotor.class, "extensionUp");
         extentionCross = hwMap.get(DcMotor.class, "extensionCross");
-        picker  = hwMap.get(Servo.class,"picker");
+        picker = hwMap.get(Servo.class, "picker");
 
         //imu
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();

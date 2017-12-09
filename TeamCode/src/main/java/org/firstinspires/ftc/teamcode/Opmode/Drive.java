@@ -37,18 +37,16 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Configuration;
 import org.firstinspires.ftc.teamcode.util.MovingAverage;
 
-@TeleOp(name="Drive", group="Pushbot")
+@TeleOp(name = "Drive", group = "Pushbot")
 
 public class Drive extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private Configuration robot           = new Configuration();   // Use a Pushbot's hardware
+    private Configuration robot = new Configuration();   // Use a Pushbot's hardware
     private boolean toMax = false;
     private boolean toMin = false;
     private double multiplier = 0.8;
     private boolean lastButtonState = false;
-
-
 
 
     @Override
@@ -65,7 +63,7 @@ public class Drive extends LinearOpMode {
         telemetry.update();
 
         telemetry.setAutoClear(false);
-        Telemetry.Item toggel = telemetry.addData("Toggel" , "%12.3f", 0.0);
+        Telemetry.Item toggel = telemetry.addData("Toggel", "%12.3f", 0.0);
 
 
         DriveController.SetupTelemetry(telemetry);
@@ -90,81 +88,78 @@ public class Drive extends LinearOpMode {
             if (currentButtonState && !lastButtonState) {
                 if (multiplier == 0.8) {
                     multiplier = 0.2;
-                }
-                else {
+                } else {
                     multiplier = 0.8;
                 }
             }
             //If current button states changed then change last button state
-            if(currentButtonState != lastButtonState){
+            if (currentButtonState != lastButtonState) {
                 lastButtonState = currentButtonState;
             }
 
 //            robot.leftDrive.setPower((drive_bias.x)*multiplier);
 //            robot.rightDrive.setPower(  (-drive_bias.y)*multiplier);
 
-            robot.leftDrive.setPower(((gamepad1.right_trigger-gamepad1.left_trigger)*-1-gamepad1.right_stick_x)*multiplier);
-            robot.rightDrive.setPower(((gamepad1.right_trigger-gamepad1.left_trigger)*1-gamepad1.right_stick_x)*multiplier);
-
+            robot.leftDrive.setPower(((gamepad1.right_trigger - gamepad1.left_trigger) * -1 - gamepad1.right_stick_x) * multiplier);
+            robot.rightDrive.setPower(((gamepad1.right_trigger - gamepad1.left_trigger) * 1 - gamepad1.right_stick_x) * multiplier);
 
 
             //lift
-            if(gamepad2.dpad_up){
+            if (gamepad2.dpad_up) {
                 robot.ymotion.setPower(1);
             }
-            if(gamepad2.dpad_down){
+            if (gamepad2.dpad_down) {
                 robot.ymotion.setPower(-1);
             }
-            if(!gamepad2.dpad_up && !gamepad2.dpad_down){
+            if (!gamepad2.dpad_up && !gamepad2.dpad_down) {
                 robot.ymotion.setPower(0);
             }
             robot.xmotion.setPower(gamepad2.left_stick_x * -1);
 
             //grabber
-            if((gamepad2.right_bumper && !gamepad2.left_bumper)&&!toMin){
+            if ((gamepad2.right_bumper && !gamepad2.left_bumper) && !toMin) {
                 toMax = true;
             }
-            if (toMax){
+            if (toMax) {
                 robot.grabber.setPosition(1);
-                if(robot.min.isPressed()){
+                if (robot.min.isPressed()) {
                     robot.grabber.setPosition(0.5);
                     toMax = false;
                 }
             }
-            if((gamepad2.left_bumper && !gamepad2.right_bumper)&&!toMax){
+            if ((gamepad2.left_bumper && !gamepad2.right_bumper) && !toMax) {
                 toMin = true;
             }
-            if(toMin){
+            if (toMin) {
                 robot.grabber.setPosition(0);
-                if(robot.max.isPressed()){
+                if (robot.max.isPressed()) {
                     robot.grabber.setPosition(0.5);
                     toMin = false;
                 }
             }
 
 
-
 //            //extendor
-            if(gamepad2.y){
+            if (gamepad2.y) {
                 robot.extentionUp.setPower(-1);
             }
-            if(gamepad2.a){
+            if (gamepad2.a) {
                 robot.extentionUp.setPower(1);
             }
-            if(!gamepad2.y && !gamepad2.a){
+            if (!gamepad2.y && !gamepad2.a) {
                 robot.extentionUp.setPower(0);
             }
-           robot.extentionCross.setPower(gamepad2.right_stick_x*-1);
-            if (gamepad1.dpad_left){
+            robot.extentionCross.setPower(gamepad2.right_stick_x * -1);
+            if (gamepad1.dpad_left) {
                 robot.picker.setPosition(0);
             }
-            if(gamepad1.dpad_right){
+            if (gamepad1.dpad_right) {
                 robot.picker.setPosition(1);
             }
-            if(!gamepad1.dpad_right && !gamepad1.dpad_left){
+            if (!gamepad1.dpad_right && !gamepad1.dpad_left) {
                 robot.picker.setPosition(0.5);
             }
-            
+
         }
     }
 
