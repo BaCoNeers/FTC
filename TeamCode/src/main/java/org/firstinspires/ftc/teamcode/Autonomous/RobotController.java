@@ -15,27 +15,20 @@ import org.firstinspires.ftc.teamcode.Configuration;
  */
 
 public class RobotController {
-    private static LinearOpMode program;
+    private static AutonomousOpMode autonomous;
     private static Telemetry telemetry;
     private static Configuration robot;
     private static float startAngle;
 
     //gets and sets the robots configuration and telemetry to be used later
-    public static void RegisterAutonomousController(LinearOpMode _autonomous) {
+    public static void RegisterAutonomousController(AutonomousOpMode _autonomous) {
 
-        program = _autonomous;
-        telemetry = program.telemetry;
+        autonomous = _autonomous;
+        telemetry = _autonomous.telemetry;
         robot = _autonomous.robot;
 
     }
 
-    public static void RegisterJewelController(LinearOpMode _jewel) {
-
-        program = _jewel;
-        telemetry = _jewel.telemetry;
-        robot = _jewel.robot;
-
-    }
 
     //set a defult value of tolerance if one is not passed though for the turning function
     public static void turn(float degrestoturn, Turn direction) {
