@@ -116,20 +116,20 @@ public class AutonomousOpMode extends LinearOpMode {
 
     public void Run4(){
         RobotController.moveservo();
-        //RobotController.setStartAngle();
-        //RobotController.moveyUp();
+        RobotController.setStartAngle();
+        RobotController.moveyUp();
         RobotController.Jewel(true);
-        RobotController.turn(35,Turn.RIGHT);
-        RobotController.driveForward(0.3f , 0.3f);
-        //RobotController.fixHeading();
-       //VuforiaCheck();
-       //RobotController.driveForward(0.3f, 0.5f);
+        RobotController.driveBackward(0.3f,0.3f);
 
-       // RobotController.turn(90, Turn.RIGHT);
-        //RobotController.driveForward(0.3f, 0.1f);
+        RobotController.fixHeading();
+       //VuforiaCheck();
+       RobotController.driveBackward(0.3f, 0.5f);
+
+        RobotController.turn(90, Turn.RIGHT);
+        RobotController.driveForward(0.3f, 0.1f);
         RobotController.openGrabber();
-        //RobotController.driveBackward(0.3f,0.25f);
-        //RobotController.driveForward(0.3f,0.2f);
+        RobotController.driveBackward(0.3f,0.25f);
+        RobotController.driveForward(0.3f,0.25f);
     }
 
     public void testImu(){
