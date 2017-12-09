@@ -47,6 +47,7 @@ public class Drive extends LinearOpMode {
     private boolean toMin = false;
     private double multiplier = 0.8;
     private boolean lastButtonState = false;
+    private boolean inti = true;
 
 
 
@@ -75,6 +76,11 @@ public class Drive extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
+            if(inti){
+                robot.push.setPosition(0.45);
+                robot.drop.setPosition(0.3);
+                inti = false;
+            }
             vec2 drive_bias = DriveController.GetDriveBias(gamepad1);
 
             toggel.setValue(multiplier);
