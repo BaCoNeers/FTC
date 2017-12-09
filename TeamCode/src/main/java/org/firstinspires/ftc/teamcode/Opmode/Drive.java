@@ -131,7 +131,7 @@ public class Drive extends LinearOpMode {
                     toMax = false;
                 }
             }
-            if((gamepad2.left_bumper && gamepad2.right_bumper)&&!toMax){
+            if((gamepad2.left_bumper && !gamepad2.right_bumper)&&!toMax){
                 toMin = true;
             }
             if(toMin){
