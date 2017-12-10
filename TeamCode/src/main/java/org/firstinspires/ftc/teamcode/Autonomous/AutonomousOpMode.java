@@ -93,7 +93,7 @@ public class AutonomousOpMode extends LinearOpMode {
         RobotController.moveyUp();
         RobotController.Jewel(true);
         RobotController.driveForward(0.3f, 0.40f);
-        RobotController.turn(45, Turn.RIGHT);
+        RobotController.turn(45, Turn.LEFT);
         RobotController.driveForward(0.3f, 0.2f);
         RobotController.openGrabber();
         RobotController.driveBackward(0.3f, 0.1f);
