@@ -96,11 +96,11 @@ public class RobotController {
 
             count++;
             if (diff < 0) {
-                robot.leftDrive.setPower(0.21);
-                robot.rightDrive.setPower(-0.21);
+                robot.leftDrive.setPower(0.31);
+                robot.rightDrive.setPower(-0.31);
             } else {
-                robot.leftDrive.setPower(-0.21);
-                robot.rightDrive.setPower(0.21);
+                robot.leftDrive.setPower(-0.31);
+                robot.rightDrive.setPower(0.31);
             }
 
             angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);

@@ -24,7 +24,7 @@ public class testvuforia extends LinearOpMode {
     public CubeLocation location = CubeLocation.Unknown;
 
     public void runOpMode() throws InterruptedException {
-        VuforiaController.VuforiaInit();
+
         //waits for the start button to be pressed
 
 

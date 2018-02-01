@@ -47,7 +47,7 @@ public class AutonomousOpMode extends LinearOpMode {
         waitForStart();
         //complete the run
         if (opModeIsActive()) {
-            blue1();
+            jewel();
         }
 
     }
@@ -115,12 +115,16 @@ public class AutonomousOpMode extends LinearOpMode {
         RobotController.setStartAngle();
         RobotController.moveyUp();
         RobotController.Jewel(false);
-        RobotController.driveForward(0.3f, 0.40f);
+        RobotController.driveBackward(0.4f, 0.70f);
         RobotController.turn(90,Turn.LEFT);
         RobotController.turn(45, Turn.LEFT);
-        RobotController.driveForward(0.3f, 0.2f);
+        RobotController.driveForward(0.3f, 0.3f);
         RobotController.openGrabber();
         RobotController.driveBackward(0.3f, 0.1f);
+    }
+
+    public void jewel(){
+        RobotController.Jewel(true);
     }
 
 }
