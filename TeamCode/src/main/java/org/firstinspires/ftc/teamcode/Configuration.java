@@ -126,7 +126,7 @@ public class Configuration {
         leftDrive.setPower(0);
         rightDrive.setPower(0);
 
-        // Set all motors to run with encoders.
+        // Set all motors to run with out encoders.
         leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 

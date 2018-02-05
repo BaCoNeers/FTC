@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Configuration;
 
 
@@ -66,9 +67,16 @@ public class Simons_New_Autonomous extends LinearOpMode {
     private int encoder_tick_right;
     private int encoder_tick_left;
 
+    Telemetry.Item left_encoder = telemetry.addData("left encoder", "%12.3f", 0.0);
+    Telemetry.Item right_encoder = telemetry.addData("right encoder", "%12.3f", 0.0);
+
 
     @Override
     public void runOpMode() {
+
+        telemetry.setAutoClear(false);
+
+
         //sets the configuration of the robot
         robot = new Configuration();
         //initializes the configuration
@@ -84,8 +92,8 @@ public class Simons_New_Autonomous extends LinearOpMode {
         waitForStart();
         //complete the run
         if (opModeIsActive()) {
-            drive(100);
-            turn(90);
+            drive(500,"f");
+            turn(90,"r");
         }
     }
 
@@ -93,6 +101,9 @@ public class Simons_New_Autonomous extends LinearOpMode {
     private void encoders(){
         encoder_tick_right = robot.rightDrive.getCurrentPosition();
         encoder_tick_left = robot.leftDrive.getCurrentPosition()*-1;
+        left_encoder.setValue(encoder_tick_left);
+        right_encoder.setValue(encoder_tick_right);
+        telemetry.update();
     }
 
     private void reset_encoders(){
@@ -108,35 +119,52 @@ public class Simons_New_Autonomous extends LinearOpMode {
     private void turn_distance(double radius){
         double circumference = radius*Math.PI;
         degree = circumference/360;
-        turning_ppr = circumference/280;
     }
 
-    private void drive(int distance){
-        double encoder_avarage = (encoder_tick_left+encoder_tick_right)/2;
+    private void drive(int distance,String direction){
+        double encoder_average = (encoder_tick_left+encoder_tick_right)/2;
         double required_ppr = distance/ppr;
         reset_encoders();
-        while(encoder_avarage<required_ppr){
-            encoders();
-            robot.leftDrive.setPower(-0.5);
-            robot.rightDrive.setPower(0.5);
+        if(direction=="f") {
+            while (encoder_average < required_ppr) {
+                encoders();
+                robot.leftDrive.setPower(-0.5);
+                robot.rightDrive.setPower(0.5);
+            }
         }
-        if(encoder_avarage>=required_ppr){
+        else{
+            while (encoder_average*-1 < required_ppr) {
+                encoders();
+                robot.leftDrive.setPower(0.5);
+                robot.rightDrive.setPower(-0.5);
+            }
+        }
+        if(encoder_average>=required_ppr){
             robot.leftDrive.setPower(0);
             robot.rightDrive.setPower(0);
         }
     }
 
-    private void turn(int degrees){
-        double encoder_avarage = ((encoder_tick_left*-1)+encoder_tick_right)/2;
+    private void turn(int degrees,String direction){
+        double encoder_average = ((encoder_tick_left*-1)+encoder_tick_right)/2;
         double distance = degree*degrees;
         double required_ppr = distance/ppr;
         reset_encoders();
-        while(encoder_avarage<required_ppr){
-            encoders();
-            robot.leftDrive.setPower(0.5);
-            robot.rightDrive.setPower(0.5);
+        if(direction=="r") {
+            while (encoder_average < required_ppr) {
+                encoders();
+                robot.leftDrive.setPower(0.5);
+                robot.rightDrive.setPower(0.5);
+            }
         }
-        if(encoder_avarage>=required_ppr){
+        else{
+            while (encoder_average*-1 < required_ppr) {
+                encoders();
+                robot.leftDrive.setPower(-0.5);
+                robot.rightDrive.setPower(-0.5);
+            }
+        }
+        if(encoder_average>=required_ppr){
             robot.leftDrive.setPower(0);
             robot.rightDrive.setPower(0);
         }
