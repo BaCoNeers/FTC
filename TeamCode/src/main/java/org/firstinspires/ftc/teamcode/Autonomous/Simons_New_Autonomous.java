@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -76,34 +77,42 @@ public class Simons_New_Autonomous extends LinearOpMode {
 
         telemetry.setAutoClear(false);
 
+        robot.leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+        robot.leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        robot.rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         //sets the configuration of the robot
         robot = new Configuration();
         //initializes the configuration
         robot.init(hardwareMap);
-        robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        setup_encoders();
         wheel_distance(2);
         turn_distance(8);
         waitForStart();
         //complete the run
         if (opModeIsActive()) {
-            drive(500,"f");
-            turn(90,"r");
+            drive(50);
+            turn(90);
         }
     }
 
 
     private void encoders(){
         encoder_tick_right = robot.rightDrive.getCurrentPosition();
-        encoder_tick_left = robot.leftDrive.getCurrentPosition()*-1;
+        encoder_tick_left = robot.leftDrive.getCurrentPosition();
         left_encoder.setValue(encoder_tick_left);
         right_encoder.setValue(encoder_tick_right);
         telemetry.update();
+    }
+
+    private void setup_encoders(){
+        robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     private void reset_encoders(){
@@ -121,52 +130,55 @@ public class Simons_New_Autonomous extends LinearOpMode {
         degree = circumference/360;
     }
 
-    private void drive(int distance,String direction){
-        double encoder_average = (encoder_tick_left+encoder_tick_right)/2;
-        double required_ppr = distance/ppr;
-        reset_encoders();
-        if(direction=="f") {
-            while (encoder_average < required_ppr) {
+    private void drive(int distance){
+        if (opModeIsActive()) {
+            int required_ppr = (int)Math.round(distance/ppr);
+            setup_encoders();
+            robot.leftDrive.setTargetPosition(required_ppr);
+            robot.rightDrive.setTargetPosition(required_ppr);
+            robot.leftDrive.setPower(0.5);
+            robot.rightDrive.setPower(0.5);
+            while(opModeIsActive() && (robot.leftDrive.isBusy() && robot.rightDrive.isBusy())){
                 encoders();
-                robot.leftDrive.setPower(-0.5);
-                robot.rightDrive.setPower(0.5);
             }
-        }
-        else{
-            while (encoder_average*-1 < required_ppr) {
-                encoders();
-                robot.leftDrive.setPower(0.5);
-                robot.rightDrive.setPower(-0.5);
-            }
-        }
-        if(encoder_average>=required_ppr){
             robot.leftDrive.setPower(0);
             robot.rightDrive.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
     }
 
-    private void turn(int degrees,String direction){
-        double encoder_average = ((encoder_tick_left*-1)+encoder_tick_right)/2;
-        double distance = degree*degrees;
-        double required_ppr = distance/ppr;
-        reset_encoders();
-        if(direction=="r") {
-            while (encoder_average < required_ppr) {
-                encoders();
+    private void turn(int degrees){
+        if (opModeIsActive()) {
+            double distance = degree * degrees;
+            int required_ppr = (int)Math.round(distance/ppr);
+            setup_encoders();
+            robot.leftDrive.setTargetPosition(required_ppr);
+            robot.rightDrive.setTargetPosition(-required_ppr);
+            if(degrees>0){
                 robot.leftDrive.setPower(0.5);
-                robot.rightDrive.setPower(0.5);
-            }
-        }
-        else{
-            while (encoder_average*-1 < required_ppr) {
-                encoders();
-                robot.leftDrive.setPower(-0.5);
                 robot.rightDrive.setPower(-0.5);
             }
-        }
-        if(encoder_average>=required_ppr){
+            else if(degrees<0){
+                robot.leftDrive.setPower(-0.5);
+                robot.rightDrive.setPower(0.5);
+            }
+            else{
+                robot.leftDrive.setPower(0);
+                robot.rightDrive.setPower(0);
+            }
+
+            while(opModeIsActive() && (robot.leftDrive.isBusy() && robot.rightDrive.isBusy())){
+                encoders();
+            }
             robot.leftDrive.setPower(0);
             robot.rightDrive.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
     }
 }
