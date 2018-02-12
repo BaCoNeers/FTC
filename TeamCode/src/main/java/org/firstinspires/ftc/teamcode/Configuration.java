@@ -90,6 +90,8 @@ public class Configuration {
         leftDrive = hwMap.get(DcMotor.class, "leftdrive");
         rightDrive = hwMap.get(DcMotor.class, "rightdrive");
 
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         //lift
         xmotion = hwMap.get(DcMotor.class, "xmotion");

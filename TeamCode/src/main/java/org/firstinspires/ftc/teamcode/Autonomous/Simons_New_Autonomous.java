@@ -29,13 +29,12 @@
 
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Configuration;
@@ -54,19 +53,16 @@ import org.firstinspires.ftc.teamcode.Configuration;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Linear OpMode", group="Linear Opmode")
-@Disabled
+@Autonomous(name = "simons")
+
 public class Simons_New_Autonomous extends LinearOpMode {
 
     // Declare OpMode members.
-    Configuration robot;
+    private Configuration robot = new Configuration();
 
     //declare variables
     private double ppr;
-    private double turning_ppr;
     private double degree;
-    private int encoder_tick_right;
-    private int encoder_tick_left;
 
     Telemetry.Item left_encoder = telemetry.addData("left encoder", "%12.3f", 0.0);
     Telemetry.Item right_encoder = telemetry.addData("right encoder", "%12.3f", 0.0);
@@ -77,32 +73,38 @@ public class Simons_New_Autonomous extends LinearOpMode {
 
         telemetry.setAutoClear(false);
 
+        robot = new Configuration();
+        //initializes the configuration
+        robot.init(hardwareMap);
+
         robot.leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
-        robot.leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        robot.rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        robot.leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        robot.rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         //sets the configuration of the robot
-        robot = new Configuration();
-        //initializes the configuration
-        robot.init(hardwareMap);
+
+
         setup_encoders();
+        encoders();
         wheel_distance(2);
-        turn_distance(8);
+        turn_distance(7);
         waitForStart();
+
+        turn(180);
+        drive(50);
         //complete the run
         if (opModeIsActive()) {
-            drive(50);
-            turn(90);
+
         }
     }
 
 
     private void encoders(){
-        encoder_tick_right = robot.rightDrive.getCurrentPosition();
-        encoder_tick_left = robot.leftDrive.getCurrentPosition();
+        int encoder_tick_right = robot.rightDrive.getCurrentPosition();
+        int encoder_tick_left = robot.leftDrive.getCurrentPosition();
         left_encoder.setValue(encoder_tick_left);
         right_encoder.setValue(encoder_tick_right);
         telemetry.update();
@@ -111,18 +113,13 @@ public class Simons_New_Autonomous extends LinearOpMode {
     private void setup_encoders(){
         robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-
-    private void reset_encoders(){
-        robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     private void wheel_distance(double radius){
         double circumference = radius*Math.PI;
-        ppr = circumference/280;
+        ppr = circumference/1120;
     }
 
     private void turn_distance(double radius){
@@ -131,27 +128,36 @@ public class Simons_New_Autonomous extends LinearOpMode {
     }
 
     private void drive(int distance){
-        if (opModeIsActive()) {
-            int required_ppr = (int)Math.round(distance/ppr);
-            setup_encoders();
-            robot.leftDrive.setTargetPosition(required_ppr);
-            robot.rightDrive.setTargetPosition(required_ppr);
+        distance = (int)Math.round(distance/ppr);
+        setup_encoders();
+        robot.leftDrive.setTargetPosition(distance);
+        robot.rightDrive.setTargetPosition(distance);
+        if(distance>0){
             robot.leftDrive.setPower(0.5);
             robot.rightDrive.setPower(0.5);
-            while(opModeIsActive() && (robot.leftDrive.isBusy() && robot.rightDrive.isBusy())){
-                encoders();
-            }
-            robot.leftDrive.setPower(0);
-            robot.rightDrive.setPower(0);
-
-            // Turn off RUN_TO_POSITION
-            robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
+        else if(distance<0){
+            robot.rightDrive.setPower(-0.5);
+            robot.leftDrive.setPower(-0.5);
+        }
+        else{
+            robot.rightDrive.setPower(0);
+            robot.leftDrive.setPower(0);
+        }
+        while(opModeIsActive() && (robot.leftDrive.isBusy() && robot.rightDrive.isBusy())){
+            encoders();
+        }
+        robot.leftDrive.setPower(0);
+        robot.rightDrive.setPower(0);
+
+        // Turn off RUN_TO_POSITION
+        robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     private void turn(int degrees){
         if (opModeIsActive()) {
+            degrees = degrees-5;
             double distance = degree * degrees;
             int required_ppr = (int)Math.round(distance/ppr);
             setup_encoders();
