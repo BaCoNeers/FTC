@@ -94,7 +94,7 @@ public class Simons_New_Autonomous extends LinearOpMode {
         waitForStart();
 
         turn(180);
-        drive(50);
+        drive(1);
         //complete the run
         if (opModeIsActive()) {
 
@@ -157,19 +157,18 @@ public class Simons_New_Autonomous extends LinearOpMode {
 
     private void turn(int degrees){
         if (opModeIsActive()) {
-            degrees = degrees-5;
             double distance = degree * degrees;
             int required_ppr = (int)Math.round(distance/ppr);
             setup_encoders();
             robot.leftDrive.setTargetPosition(required_ppr);
             robot.rightDrive.setTargetPosition(-required_ppr);
             if(degrees>0){
-                robot.leftDrive.setPower(0.5);
-                robot.rightDrive.setPower(-0.5);
+                robot.leftDrive.setPower(0.3);
+                robot.rightDrive.setPower(-0.3);
             }
             else if(degrees<0){
-                robot.leftDrive.setPower(-0.5);
-                robot.rightDrive.setPower(0.5);
+                robot.leftDrive.setPower(-0.3);
+                robot.rightDrive.setPower(0.3);
             }
             else{
                 robot.leftDrive.setPower(0);
