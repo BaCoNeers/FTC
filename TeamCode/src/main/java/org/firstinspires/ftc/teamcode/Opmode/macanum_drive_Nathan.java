@@ -34,15 +34,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Configuration;
+import org.firstinspires.ftc.teamcode.util.Configuration_OBot;
 
 @TeleOp(name = "macanum_nathan", group = "Pushbot")
 
 public class macanum_drive_Nathan extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private Configuration robot = new Configuration();   // Use a Pushbot's hardware
-    public int power_1,power_2,power_3,power_4;
-
+    private Configuration_OBot robot = new Configuration_OBot();   // Use a Pushbot's hardware
+    public float power_1, power_2, power_3, power_4;
 
 
     @Override
@@ -61,7 +61,6 @@ public class macanum_drive_Nathan extends LinearOpMode {
         telemetry.setAutoClear(false);
 
 
-
         DriveController.SetupTelemetry(telemetry);
 
         // Wait for the game to start (driver presses PLAY)
@@ -70,12 +69,26 @@ public class macanum_drive_Nathan extends LinearOpMode {
         while (opModeIsActive()) {
             telemetry.update();
 
-            
+            power_1 = gamepad1.left_stick_x + gamepad1.left_stick_y + gamepad2.left_stick_x;
+            power_2 = gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad2.left_stick_x;
+            power_3 = gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad2.left_stick_x;
+            power_4 = gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad2.left_stick_x;
 
 
+            if (power_1 > 1) power_1 = 1;
+            if (power_2 > 1) power_2 = 1;
+            if (power_3 > 1) power_3 = 1;
+            if (power_4 > 1) power_4 = 1;
 
-
+            robot.DriveFL.setPower(power_1);
+            robot.DriveFR.setPower(power_2);
+            robot.DriveBL.setPower(power_3);
+            robot.DriveBR.setPower(power_4);
         }
+        robot.DriveFL.setPower(0);
+        robot.DriveFR.setPower(0);
+        robot.DriveBL.setPower(0);
+        robot.DriveBR.setPower(0);
     }
 
 
