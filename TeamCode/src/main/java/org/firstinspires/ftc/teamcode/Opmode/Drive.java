@@ -47,6 +47,7 @@ public class Drive extends LinearOpMode {
     private boolean toMin = false;
     private double multiplier = 0.8;
     private boolean lastButtonState = false;
+    private boolean cat;
 
 
     @Override
