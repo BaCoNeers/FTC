@@ -92,7 +92,7 @@ public class macanum_drive extends LinearOpMode {
 
             radius = Math.sqrt(Math.pow(circlex,2)+Math.pow(circley,2));
 
-            circumfrance = (2*radius*Math.PI)/360;
+            circumfrance = (2*radius*Math.PI);
 
 
             if(y>0){
@@ -106,8 +106,8 @@ public class macanum_drive extends LinearOpMode {
                     else if((x*1.1) < y || y < (x/1.1)){
                         motor_power_1 = radius;
                         motor_power_2 = 0;
-                        motor_power_3 = radius;
-                        motor_power_4 = 0;
+                        motor_power_3 = 0;
+                        motor_power_4 = radius;
                     }
                     else if(x/20>y){
                         motor_power_1 = radius;
@@ -120,16 +120,16 @@ public class macanum_drive extends LinearOpMode {
                         power = (angle*(circumfrance/360))+add;
                         motor_power_1 = power+((circumfrance/8)-power);
                         motor_power_2 = power;
-                        motor_power_3 = power+((circumfrance/8)-power);
-                        motor_power_4 = power;
+                        motor_power_3 = power;
+                        motor_power_4 = power+((circumfrance/8)-power);;
                     }
                     else{
                         angle = Math.acos(x/radius);
                         power = (angle*(circumfrance/360))+add;
                         motor_power_1 = power+((circumfrance/8)-power);
                         motor_power_2 = -power;
-                        motor_power_3 = -power+((circumfrance/8)-power);
-                        motor_power_4 = power;
+                        motor_power_3 = -power;
+                        motor_power_4 = power+((circumfrance/8)-power);
                     }
                 }
                 else{
@@ -154,18 +154,18 @@ public class macanum_drive extends LinearOpMode {
                     else if(x*-1>y){
                         angle = Math.acos(x*-1/radius);
                         power = (angle*(circumfrance/360))+add;
-                        motor_power_1 = power;
-                        motor_power_2 = -power-((circumfrance/8)-power);;
-                        motor_power_3 = -power-((circumfrance/8)-power);
-                        motor_power_4 = power;
+                        motor_power_1 = power-((circumfrance/8)-power);
+                        motor_power_2 = -power;
+                        motor_power_3 = -power;
+                        motor_power_4 = power-((circumfrance/8)-power);
                     }
                     else{
                         angle = Math.acos(y/radius);
                         power = (angle*(circumfrance/360))+add;
-                        motor_power_1 = -power;
-                        motor_power_2 = -power-((circumfrance/8)-power);;
-                        motor_power_3 = -power-((circumfrance/8)-power);
-                        motor_power_4 = -power;
+                        motor_power_1 = -power+((circumfrance/8)-power);
+                        motor_power_2 = -power;
+                        motor_power_3 = -power;
+                        motor_power_4 = -power+((circumfrance/8)-power);;
                     }
                 }
             }
@@ -189,7 +189,7 @@ public class macanum_drive extends LinearOpMode {
                         motor_power_3 = radius;
                         motor_power_4 = -radius;
                     }
-                    if(x>y*-1){
+                    if(x<y*-1){
                         angle = Math.acos(y*-1/radius);
                         power = (angle*(circumfrance/360))+add;
                         motor_power_1 = power;
@@ -226,7 +226,7 @@ public class macanum_drive extends LinearOpMode {
                         motor_power_4 = 0;
                     }
                     if(x*-1>y*-1){
-                        angle = Math.acos(y*-1/radius);
+                        angle = Math.acos(x*-1/radius);
                         power = (angle*(circumfrance/360))+add;
                         motor_power_1 = -power;
                         motor_power_2 = power-((circumfrance/8)-power);;
