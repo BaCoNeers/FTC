@@ -35,13 +35,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Configuration;
+import org.firstinspires.ftc.teamcode.util.Configuration_OBot;
 
 @TeleOp(name = "macanum", group = "Pushbot")
 
 public class macanum_drive extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private Configuration robot = new Configuration();   // Use a Pushbot's hardware
+    private Configuration_OBot robot = new Configuration_OBot();
     private double x;
     private double y;
     private double circlex;
@@ -72,8 +73,12 @@ public class macanum_drive extends LinearOpMode {
         telemetry.update();
 
         telemetry.setAutoClear(false);
+        Telemetry.Item motor_1 = telemetry.addData("motor 1", "%12.3f", 0.0);
+        Telemetry.Item motor_2 = telemetry.addData("motor 2", "%12.3f", 0.0);
+        Telemetry.Item motor_3 = telemetry.addData("motor 3", "%12.3f", 0.0);
+        Telemetry.Item motor_4 = telemetry.addData("motor 4", "%12.3f", 0.0);
 
-
+        DriveController.SetupTelemetry(telemetry);
 
         DriveController.SetupTelemetry(telemetry);
 
@@ -97,6 +102,7 @@ public class macanum_drive extends LinearOpMode {
 
             if(y>0){
                 if(x>0){
+                    //top right
                     if(x*20<y){
                         motor_power_1 = radius;
                         motor_power_2 = radius;
@@ -133,6 +139,7 @@ public class macanum_drive extends LinearOpMode {
                     }
                 }
                 else{
+                    //bottom right
                     if(-x*20>y){
                         motor_power_1 = -radius;
                         motor_power_2 = -radius;
@@ -171,6 +178,7 @@ public class macanum_drive extends LinearOpMode {
             }
             else{
                 if(x>0){
+                    //top left
                     if(-x*20>y){
                         motor_power_1 = radius;
                         motor_power_2 = radius;
@@ -207,6 +215,7 @@ public class macanum_drive extends LinearOpMode {
                     }
                 }
                 else{
+                    //bottom left
                     if(x*20<y){
                         motor_power_1 = -radius;
                         motor_power_2 = -radius;
@@ -244,6 +253,17 @@ public class macanum_drive extends LinearOpMode {
                 }
             }
 
+            motor_1.setValue(motor_power_1);
+            motor_2.setValue(motor_power_2);
+            motor_3.setValue(motor_power_3);
+            motor_4.setValue(motor_power_4);
+
+            telemetry.update();
+
+            robot.DriveFL.setPower(motor_power_1);
+            robot.DriveFR.setPower(motor_power_2);
+            robot.DriveBL.setPower(motor_power_3);
+            robot.DriveBR.setPower(motor_power_4);
 
 
         }
