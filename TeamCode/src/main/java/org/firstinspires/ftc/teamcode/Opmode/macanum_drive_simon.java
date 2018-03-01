@@ -82,7 +82,7 @@ public class macanum_drive_simon extends LinearOpMode {
             y = gamepad1.left_stick_y*-1;
 
             DS = Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
-            angle = Math.atan(x/y);
+            angle = Math.atan2(x,y);
             turn = gamepad1.right_stick_x;
 
             robot.DriveFL.setPower(DS*Math.cos(angle+(4/Math.PI))-turn);
