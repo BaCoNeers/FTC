@@ -34,22 +34,23 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Configuration;
 import org.firstinspires.ftc.teamcode.util.Configuration_OBot;
 
 @TeleOp(name = "macanum", group = "Pushbot")
 
-public class macanum_drive extends LinearOpMode {
+public class macanum_drive_simon extends LinearOpMode {
 
     /* Declare OpMode members. */
     private Configuration_OBot robot = new Configuration_OBot();
     private double x;
     private double y;
+    private double DS;
+    private double angle;
+    private double turn;
     private double motor_power_1;
     private double motor_power_2;
     private double motor_power_3;
     private double motor_power_4;
-    private boolean check = false;
 
 
     @Override
@@ -84,10 +85,14 @@ public class macanum_drive extends LinearOpMode {
             x = gamepad1.left_stick_x;
             y = gamepad1.left_stick_y*-1;
 
-            motor_power_1 = (x+y)/2;
-            motor_power_2 = (x-y)/2;
-            motor_power_3 = (x-y)/2;
-            motor_power_4 = (x+y)/2;
+            DS = Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
+            angle = Math.atan(x/y);
+            turn = gamepad1.right_stick_x;
+
+            motor_power_1 = DS*Math.cos(angle+(4/Math.PI))-turn;
+            motor_power_2 = DS*Math.sin(angle+(4/Math.PI))+turn;
+            motor_power_3 = DS*Math.sin(angle+(4/Math.PI))-turn;
+            motor_power_4 = DS*Math.cos(angle+(4/Math.PI))+turn;
 
             motor_1.setValue(motor_power_1);
             motor_2.setValue(motor_power_2);
