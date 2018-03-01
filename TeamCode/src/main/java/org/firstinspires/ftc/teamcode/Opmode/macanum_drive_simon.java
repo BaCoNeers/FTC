@@ -67,10 +67,6 @@ public class macanum_drive_simon extends LinearOpMode {
         telemetry.update();
 
         telemetry.setAutoClear(false);
-        Telemetry.Item motor_1 = telemetry.addData("motor 1", "%12.3f", 0.0);
-        Telemetry.Item motor_2 = telemetry.addData("motor 2", "%12.3f", 0.0);
-        Telemetry.Item motor_3 = telemetry.addData("motor 3", "%12.3f", 0.0);
-        Telemetry.Item motor_4 = telemetry.addData("motor 4", "%12.3f", 0.0);
         Telemetry.Item left_stick_y = telemetry.addData("y: ", "%12.3f", 0.0);
         Telemetry.Item left_stick_x = telemetry.addData("x: ", "%12.3f", 0.0);
 
@@ -89,24 +85,15 @@ public class macanum_drive_simon extends LinearOpMode {
             angle = Math.atan(x/y);
             turn = gamepad1.right_stick_x;
 
-            motor_power_1 = DS*Math.cos(angle+(4/Math.PI))-turn;
-            motor_power_2 = DS*Math.sin(angle+(4/Math.PI))+turn;
-            motor_power_3 = DS*Math.sin(angle+(4/Math.PI))-turn;
-            motor_power_4 = DS*Math.cos(angle+(4/Math.PI))+turn;
+            robot.DriveFL.setPower(DS*Math.cos(angle+(4/Math.PI))-turn);
+            robot.DriveFR.setPower(DS*Math.sin(angle+(4/Math.PI))+turn);
+            robot.DriveBL.setPower(DS*Math.sin(angle+(4/Math.PI))-turn);
+            robot.DriveBR.setPower(DS*Math.cos(angle+(4/Math.PI))+turn);
 
-            motor_1.setValue(motor_power_1);
-            motor_2.setValue(motor_power_2);
-            motor_3.setValue(motor_power_3);
-            motor_4.setValue(motor_power_4);
+
             left_stick_x.setValue(x);
             left_stick_y.setValue(y);
-
             telemetry.update();
-
-            robot.DriveFL.setPower(motor_power_1);
-            robot.DriveFR.setPower(motor_power_2);
-            robot.DriveBL.setPower(motor_power_3);
-            robot.DriveBR.setPower(motor_power_4);
 
 
         }
