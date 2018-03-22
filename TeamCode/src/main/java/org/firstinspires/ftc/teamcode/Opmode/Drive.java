@@ -101,8 +101,8 @@ public class Drive extends LinearOpMode {
 //            robot.leftDrive.setPower((drive_bias.x)*multiplier);
 //            robot.rightDrive.setPower(  (-drive_bias.y)*multiplier);
 
-            robot.leftDrive.setPower(((gamepad1.right_trigger - gamepad1.left_trigger) * -1 - gamepad1.right_stick_x) * multiplier);
-            robot.rightDrive.setPower(((gamepad1.right_trigger - gamepad1.left_trigger) * 1 - gamepad1.right_stick_x) * multiplier);
+            robot.leftDrive.setPower(((gamepad1.right_trigger - gamepad1.left_trigger)  + gamepad1.right_stick_x) * multiplier);
+            robot.rightDrive.setPower(((gamepad1.right_trigger - gamepad1.left_trigger)  - gamepad1.right_stick_x) * multiplier);
 
 
             //lift
