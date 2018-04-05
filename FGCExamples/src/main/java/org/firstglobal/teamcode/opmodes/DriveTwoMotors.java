@@ -8,7 +8,7 @@ import org.firstglobal.FgCommon.GamePadMotor;
 
 
 @TeleOp (group = "TwoMotorRobot")
-//@Disabled
+@Disabled
 public class DriveTwoMotors extends FGOpMode {
 
     private TwoMotorRobot robot;

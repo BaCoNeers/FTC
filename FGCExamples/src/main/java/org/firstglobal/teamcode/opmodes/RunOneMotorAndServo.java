@@ -8,7 +8,7 @@ import org.firstglobal.teamcode.configurations.MotorAndServoRobot;
 
 
 @TeleOp (group = "MotorAndServoRobot")
-//@Disabled
+@Disabled
 public class RunOneMotorAndServo extends FGOpMode {
 
     private MotorAndServoRobot robot;

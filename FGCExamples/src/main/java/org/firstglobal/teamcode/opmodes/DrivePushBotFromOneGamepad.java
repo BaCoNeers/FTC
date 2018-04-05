@@ -9,7 +9,7 @@ import org.firstglobal.FgCommon.GamePadServo;
 
 
 @TeleOp ( group = "PushBotWithClaw")
-//@Disabled
+@Disabled
 public class DrivePushBotFromOneGamepad extends FGOpMode {
 
     private PushBotWithClaw robot;
