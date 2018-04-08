@@ -25,7 +25,7 @@ public class SteerDrive extends BaconOpMode {
     private GamePadSafeDualMotor winch;
     private GamePadSafeDualMotorwinch winch2;
     private GamePadToggleMotorWithRevers harvesterPrimary;
-    private GamePadToggleMotor harvesterSecondary;
+    private GamePadToggleMotorWithRevers harvesterSecondary;
     private WhileGamePadCRServo crServo;
     private Telemetry.Item avgItem;
     private Telemetry.Item maxItem;
@@ -48,7 +48,7 @@ public class SteerDrive extends BaconOpMode {
         drive = new GamePadSteerDrive(this,gamepad1,robot.driveLeft,robot.driveRight);
 
         harvesterPrimary = new GamePadToggleMotorWithRevers(this,gamepad2,robot.harvesterPrimary, ButtonControl.A, ButtonControl.X,1.0f,false);
-        harvesterSecondary = new GamePadToggleMotor(this,gamepad2,robot.harvesterSecondary, ButtonControl.B, 1.0f,false);
+        harvesterSecondary = new GamePadToggleMotorWithRevers(this,gamepad2,robot.harvesterSecondary, ButtonControl.B, ButtonControl.Y,1.0f,false);
 
         avgItem = telemetry.addData("Avg", "%.3f ms", 0.0);
         avgItem.setRetained(true);

@@ -46,9 +46,9 @@ public class SmokeyBase extends RobotConfiguration {
 
         setTelemetry(telemetry);
 
-        driveLeft = (DcMotor) getHardwareOn("left1_drive", hardwareMap.dcMotor);
+        driveLeft = (DcMotor) getHardwareOn("leftdrive", hardwareMap.dcMotor);
         //driveLeftLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        driveRight = (DcMotor) getHardwareOn("left2_drive", hardwareMap.dcMotor);
+        driveRight = (DcMotor) getHardwareOn("rightdrive", hardwareMap.dcMotor);
 
         harvesterPrimary = hardwareMap.dcMotor.get("motor_harvester");
         harvesterSecondary = hardwareMap.dcMotor.get("motor_particlelift");
