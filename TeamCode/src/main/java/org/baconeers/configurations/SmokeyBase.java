@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.FgCommon.RobotConfiguration;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -34,6 +35,9 @@ public class SmokeyBase extends RobotConfiguration {
     // Color Sensor
     //public ColorSensor sorterColorSensor;
 
+    //Touch Sensor
+    public TouchSensor touchSensorLauncher;
+
 
     /**
      * Assign your class instance variables to the saved device names in the hardware map
@@ -56,6 +60,8 @@ public class SmokeyBase extends RobotConfiguration {
 
         lift = hardwareMap.dcMotor.get("motor_lift");
         launcher = hardwareMap.dcMotor.get("motor_launcher");
+
+        touchSensorLauncher = hardwareMap.touchSensor.get("launcher_touch_sensor");
 
         /**
          * Examples

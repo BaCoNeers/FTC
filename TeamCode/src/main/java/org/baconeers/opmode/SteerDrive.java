@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.baconeers.common.BaconOpMode;
 import org.baconeers.common.ButtonControl;
 import org.baconeers.common.GamePadDualMotorSteerDrive2;
+import org.baconeers.common.GamePadLauncherSingle;
 import org.baconeers.common.GamePadSafeDualMotor;
 import org.baconeers.common.GamePadSafeDualMotorwinch;
 import org.baconeers.common.GamePadSteerDrive;
@@ -32,6 +33,7 @@ public class SteerDrive extends BaconOpMode {
     private KanaloaBallSorter kanaloaBallSorter;
     private GamePadToggleServo redServo;
     private GamePadSteerDrive drive;
+    private GamePadLauncherSingle launcher;
 
 
 
@@ -49,6 +51,8 @@ public class SteerDrive extends BaconOpMode {
 
         harvesterPrimary = new GamePadToggleMotorWithRevers(this,gamepad2,robot.harvesterPrimary, ButtonControl.A, ButtonControl.X,1.0f,false);
         harvesterSecondary = new GamePadToggleMotorWithRevers(this,gamepad2,robot.harvesterSecondary, ButtonControl.B, ButtonControl.Y,1.0f,false);
+
+        launcher = new GamePadLauncherSingle(this,gamepad2,robot.launcher,ButtonControl.DPAD_LEFT,1.0f,false);
 
         avgItem = telemetry.addData("Avg", "%.3f ms", 0.0);
         avgItem.setRetained(true);
@@ -78,6 +82,9 @@ public class SteerDrive extends BaconOpMode {
         // Update the Harvester
         harvesterPrimary.update();
         harvesterSecondary.update();
+
+        drive.update();;
+        launcher.update();
 
         movingAverageTimer.update();
         avgItem.setValue("%.3f ms", movingAverageTimer.movingAverage());
