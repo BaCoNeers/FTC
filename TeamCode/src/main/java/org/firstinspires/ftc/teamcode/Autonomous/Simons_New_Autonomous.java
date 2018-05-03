@@ -55,7 +55,7 @@ import org.firstinspires.ftc.teamcode.Configuration;
 
 @Autonomous(name = "simons")
 
-public class Simons_New_Autonomous extends LinearOpMode {
+public class  Simons_New_Autonomous extends LinearOpMode {
 
     // Declare OpMode members.
     private Configuration robot = new Configuration();
