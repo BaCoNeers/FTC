@@ -12,6 +12,7 @@ public class MovingAverageTimer {
     private int ringBufferIndex = 0;
 
     private long loopCount = 0;
+    private long loopTime = 0;
 
     private long movingTotal = 0;
     private long runningTotal = 0;
@@ -78,6 +79,7 @@ public class MovingAverageTimer {
         }
     }
 
+
     public void reset() {
         loopCount = 0;
         previousTime = System.nanoTime();
@@ -89,7 +91,7 @@ public class MovingAverageTimer {
 
     public void update() {
         long now = System.nanoTime();
-        long loopTime = now - previousTime;
+        loopTime = now - previousTime;
         previousTime = now;
 
         if (loopCount > 0) {
@@ -175,6 +177,10 @@ public class MovingAverageTimer {
 
     public double maxLoopTime() {
         return maxLoopTime / resolution;
+    }
+
+    public double loopTime() {
+        return loopTime / resolution;
     }
 
     public double elapsedTime() {

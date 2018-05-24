@@ -32,19 +32,18 @@ package org.firstinspires.ftc.teamcode.Opmode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Configuration;
 import org.firstinspires.ftc.teamcode.CrispyConfig;
+import org.firstinspires.ftc.teamcode.M9Config;
 import org.firstinspires.ftc.teamcode.util.MovingAverageTimer;
 
-@TeleOp(name = "TrolleyDrive", group = "Pushbot")
+@TeleOp(name = "M9Drive", group = "Pushbot")
 
-public class CrispyDrive extends LinearOpMode {
+public class M9Drive extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private CrispyConfig robot = new CrispyConfig();   // Use a Pushbot's hardware
+    private M9Config robot = new M9Config();   // Use a Pushbot's hardware
 
 
 
@@ -57,24 +56,8 @@ public class CrispyDrive extends LinearOpMode {
          */
         robot.init(hardwareMap);
 
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "Hello Driver");    //
-        telemetry.update();
-
-        long startTime;
-        long estimatedTime;
-
-        double CurrentLeftPower = 0;
-        double CurrentRightPower = 0;
-
-        telemetry.setAutoClear(false);
-        Telemetry.Item toggel = telemetry.addData("Toggel", "%12.3f", 0.0);
-        Telemetry.Item elaspedtime = telemetry.addData("elaspedtime", "%12.3f", 0.0);
-        Telemetry.Item leftPower = telemetry.addData("leftpower", "%12.3f",0.0);
-        Telemetry.Item rightPower = telemetry.addData("rightpower", "%12.3f",0.0);
-
-        DriveController.SetupTelemetry(telemetry);
-        startTime = System.nanoTime();
+        float forward =0;
+        float turn =0;
 
         MovingAverageTimer timer = new MovingAverageTimer(1000);
 
@@ -84,51 +67,20 @@ public class CrispyDrive extends LinearOpMode {
         while (opModeIsActive()) {
             timer.update();
             telemetry.update();
-            double max_inc = .250*timer.loopTime()/1000.0;
+            forward = gamepad1.right_trigger - gamepad1.left_trigger;
+            turn = gamepad1.right_stick_x;
 
-            elaspedtime.setValue(timer.loopTime());
+            robot.leftDrive.setPower(forward+turn);
+            robot.rightDrive.setPower(forward-turn);
 
-            CurrentLeftPower = getPower((gamepad1.right_trigger - gamepad1.left_trigger)  - gamepad1.right_stick_x,CurrentLeftPower, max_inc);
-            CurrentRightPower = getPower((gamepad1.right_trigger - gamepad1.left_trigger)   + gamepad1.right_stick_x,CurrentRightPower, max_inc);
-
-            rightPower.setValue(CurrentRightPower);
-            leftPower.setValue(CurrentLeftPower);
-
-            robot.leftDrive.setPower(CurrentLeftPower) ;
-            robot.rightDrive.setPower(CurrentRightPower );
-            timer.average();
-
-
-
-            startTime = System.nanoTime();
-
-        }
-    }
-
-    public double getPower(double desiredPower,double currentPower, double maxInc){
-
-        if (Math.abs(currentPower-desiredPower) < maxInc){
-            return desiredPower;
-        }
-
-        double sign = Math.signum(desiredPower);
-
-        if (desiredPower > 0) {
-            if (desiredPower > currentPower) {
-                currentPower = Math.min(maxInc + currentPower, desiredPower);
-            } else if (desiredPower < currentPower) {
-                currentPower = Math.max(currentPower-maxInc, desiredPower);
-            }
-        } else {
-            if (currentPower < desiredPower) {
-                currentPower = Math.min(maxInc + currentPower, desiredPower);
-            } else if (currentPower > desiredPower) {
-                currentPower = Math.max(currentPower - maxInc, desiredPower);
+            if(forward>0 ||turn>0) {
+                if(gamepad1.a){
+                    robot.spinner.setPower(1);
+                }
             }
 
-        }
 
-        return currentPower;
+        }
     }
 
 

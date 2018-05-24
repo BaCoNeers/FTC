@@ -29,13 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 
 /**
@@ -54,17 +49,18 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
  * Servo channel:  Servo to open left claw:  "left_hand"
  * Servo channel:  Servo to open right claw: "right_hand"
  */
-public class CrispyConfig {
+public class M9Config {
     /* Public OpMode members. */
     public DcMotor leftDrive = null;
     public DcMotor rightDrive = null;
+    public DcMotor spinner = null;
 
 
     /* local OpMode members. */
     HardwareMap hwMap = null;
 
     /* Constructor */
-    public CrispyConfig() {
+    public M9Config() {
 
     }
 
@@ -77,8 +73,9 @@ public class CrispyConfig {
         //Motor drive
         leftDrive = hwMap.get(DcMotor.class, "leftdrive");
         rightDrive = hwMap.get(DcMotor.class, "rightdrive");
+        spinner = hwMap.get(DcMotor.class,"spinner");
 
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+//        leftDrive.setDirection(DcMotor.Direction.REVERSE);
 //        rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
 
