@@ -32,16 +32,14 @@ package org.firstinspires.ftc.teamcode.Opmode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Configuration;
 import org.firstinspires.ftc.teamcode.CrispyConfig;
 import org.firstinspires.ftc.teamcode.util.MovingAverageTimer;
 
-@TeleOp(name = "TrolleyDrive - Standard", group = "Pushbot")
+@TeleOp(name = "TrolleyDrive - Increment Drive", group = "Pushbot")
 
-public class CrispyDrive extends LinearOpMode {
+public class TrollyDrive_IncMovement extends LinearOpMode {
 
     /* Declare OpMode members. */
     private CrispyConfig robot = new CrispyConfig();   // Use a Pushbot's hardware
@@ -64,14 +62,12 @@ public class CrispyDrive extends LinearOpMode {
         long startTime;
         long estimatedTime;
 
-        double CurrentLeftPower = 0;
-        double CurrentRightPower = 0;
+        double CurrentPower = 0;
 
         telemetry.setAutoClear(false);
         Telemetry.Item toggel = telemetry.addData("Toggel", "%12.3f", 0.0);
         Telemetry.Item elaspedtime = telemetry.addData("elaspedtime", "%12.3f", 0.0);
-        Telemetry.Item leftPower = telemetry.addData("leftpower", "%12.3f",0.0);
-        Telemetry.Item rightPower = telemetry.addData("rightpower", "%12.3f",0.0);
+        Telemetry.Item Power = telemetry.addData("leftpower", "%12.3f",0.0);
 
         DriveController.SetupTelemetry(telemetry);
         startTime = System.nanoTime();
@@ -88,14 +84,12 @@ public class CrispyDrive extends LinearOpMode {
 
             elaspedtime.setValue(timer.loopTime());
 
-            CurrentLeftPower = getPower((gamepad1.right_trigger - gamepad1.left_trigger)  - gamepad1.right_stick_x,CurrentLeftPower, max_inc);
-            CurrentRightPower = getPower((gamepad1.right_trigger - gamepad1.left_trigger)   + gamepad1.right_stick_x,CurrentRightPower, max_inc);
+            CurrentPower = getPower((gamepad1.right_trigger - gamepad1.left_trigger),CurrentPower, max_inc);
 
-            rightPower.setValue(CurrentRightPower);
-            leftPower.setValue(CurrentLeftPower);
+            Power.setValue(CurrentPower);
 
-            robot.leftDrive.setPower(CurrentLeftPower) ;
-            robot.rightDrive.setPower(CurrentRightPower );
+            robot.leftDrive.setPower(CurrentPower+gamepad1.right_stick_x) ;
+            robot.rightDrive.setPower(CurrentPower-gamepad1.right_stick_y );
             timer.average();
 
 
