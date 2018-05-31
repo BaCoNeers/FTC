@@ -88,8 +88,8 @@ public class CrispyDrive extends LinearOpMode {
 
             elaspedtime.setValue(timer.loopTime());
 
-            CurrentLeftPower = getPower((gamepad1.right_trigger - gamepad1.left_trigger)  - gamepad1.right_stick_x,CurrentLeftPower, max_inc);
-            CurrentRightPower = getPower((gamepad1.right_trigger - gamepad1.left_trigger)   + gamepad1.right_stick_x,CurrentRightPower, max_inc);
+            CurrentLeftPower = getPower((gamepad1.right_trigger - gamepad1.left_trigger)  + gamepad1.right_stick_x,CurrentLeftPower, max_inc);
+            CurrentRightPower = getPower((gamepad1.right_trigger - gamepad1.left_trigger)   - gamepad1.right_stick_x,CurrentRightPower, max_inc);
 
             rightPower.setValue(CurrentRightPower);
             leftPower.setValue(CurrentLeftPower);

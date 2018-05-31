@@ -88,8 +88,8 @@ public class TrollyDrive_IncMovement extends LinearOpMode {
 
             Power.setValue(CurrentPower);
 
-            robot.leftDrive.setPower(CurrentPower+gamepad1.right_stick_x) ;
-            robot.rightDrive.setPower(CurrentPower-gamepad1.right_stick_y );
+            robot.leftDrive.setPower(CurrentPower-gamepad1.right_stick_x) ;
+            robot.rightDrive.setPower(CurrentPower+gamepad1.right_stick_y );
             timer.average();
 
 

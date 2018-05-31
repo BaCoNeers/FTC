@@ -37,7 +37,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Configuration;
 import org.firstinspires.ftc.teamcode.util.MovingAverage;
 
-@TeleOp(name = "Drive", group = "Pushbot")
+@TeleOp(name = "Drive_", group = "Pushbot")
 
 public class Drive extends LinearOpMode {
 

@@ -37,7 +37,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.CrispyConfig;
 import org.firstinspires.ftc.teamcode.util.MovingAverageTimer;
 
-@TeleOp(name = "TrolleyDrive - Tank", group = "Pushbot")
+@TeleOp(name = "TrolleyDrive - Tank v.1", group = "Pushbot")
 
 public class TrollyDrive_Tank extends LinearOpMode {
 
@@ -64,12 +64,12 @@ public class TrollyDrive_Tank extends LinearOpMode {
 
         double CurrentLeftPower = 0;
         double CurrentRightPower = 0;
+        double max_inc;
 
         telemetry.setAutoClear(false);
-        Telemetry.Item toggel = telemetry.addData("Toggel", "%12.3f", 0.0);
         Telemetry.Item elaspedtime = telemetry.addData("elaspedtime", "%12.3f", 0.0);
-        Telemetry.Item leftPower = telemetry.addData("leftpower", "%12.3f",0.0);
-        Telemetry.Item rightPower = telemetry.addData("rightpower", "%12.3f",0.0);
+        Telemetry.Item leftPower = telemetry.addData("CurrentLeftPower", "%12.3f",0.0);
+        Telemetry.Item rightPower = telemetry.addData("CurrentRightPower", "%12.3f",0.0);
 
         DriveController.SetupTelemetry(telemetry);
         startTime = System.nanoTime();
@@ -81,13 +81,20 @@ public class TrollyDrive_Tank extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             timer.update();
-            telemetry.update();
-            double max_inc = .250*timer.loopTime()/1000.0;
+
+            max_inc = .250 * timer.loopTime() / 300;
+
 
             elaspedtime.setValue(timer.loopTime());
 
-            CurrentLeftPower = getPower(gamepad1.left_stick_y,CurrentLeftPower, max_inc);
-            CurrentRightPower = getPower(gamepad1.right_stick_y,CurrentRightPower, max_inc);
+            CurrentLeftPower = getPower(-gamepad1.left_stick_y,CurrentLeftPower, max_inc);
+            CurrentRightPower = getPower(-gamepad1.right_stick_y,CurrentRightPower, max_inc);
+
+
+            if(gamepad1.a){
+                CurrentLeftPower =0;
+                CurrentRightPower = 0;
+            }
 
             rightPower.setValue(CurrentRightPower);
             leftPower.setValue(CurrentLeftPower);
@@ -97,9 +104,8 @@ public class TrollyDrive_Tank extends LinearOpMode {
             timer.average();
 
 
-
             startTime = System.nanoTime();
-
+            telemetry.update();
         }
     }
 
