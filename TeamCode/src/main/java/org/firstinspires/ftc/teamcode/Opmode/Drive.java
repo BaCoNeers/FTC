@@ -79,9 +79,9 @@ public class Drive extends LinearOpMode {
             toggel.setValue(multiplier);
 
 
+
             telemetry.update();
 
-//
 //            //Keep track of gamepad1.x which is just the x button
             boolean currentButtonState = gamepad1.x;
             //check if current button state is true and last button state is false

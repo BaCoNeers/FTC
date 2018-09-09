@@ -81,33 +81,21 @@ public class macanum_drive_simon extends LinearOpMode {
         waitForStart();
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            telemetry.update();
 
-            x = gamepad1.left_stick_x;
-            y = gamepad1.left_stick_y*-1;
-
-            DS = Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
-            angle = Math.atan2(x,y);
-            turn = gamepad1.right_stick_x;
-
-            motor_power_1 = (DS*Math.sin(angle+(4/Math.PI))-turn);
-            motor_power_2 = (DS*Math.cos(angle+(4/Math.PI))+turn);
-            motor_power_3 = (DS*Math.cos(angle+(4/Math.PI))-turn);
-            motor_power_4 = (DS*Math.sin(angle+(4/Math.PI))+turn);
-
-            motor_1.setValue(motor_power_1);
-            motor_2.setValue(motor_power_2);
-            motor_3.setValue(motor_power_3);
-            motor_4.setValue(motor_power_4);
-
-            left_stick_x.setValue(x);
-            left_stick_y.setValue(y);
-            telemetry.update();
+            motor_power_1 = gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x;
+            motor_power_2 = gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x;
+            motor_power_3 = gamepad1.left_stick_y - gamepad1.right_stick_x - gamepad1.left_stick_x;
+            motor_power_4 = gamepad1.left_stick_y - gamepad1.right_stick_x + gamepad1.left_stick_x;
 
             robot.DriveFL.setPower(motor_power_1);
-            robot.DriveFR.setPower(motor_power_2);
-            robot.DriveBL.setPower(motor_power_3);
-            robot.DriveBR.setPower(motor_power_4);
+            robot.DriveBL.setPower(motor_power_2);
+            robot.DriveFR.setPower(motor_power_3);
+            robot.DriveFL.setPower(motor_power_4);
+
+
+            telemetry.update();
+
+
 
 
         }
