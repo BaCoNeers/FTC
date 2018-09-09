@@ -69,10 +69,10 @@ public class macanum_drive_Nathan extends LinearOpMode {
         while (opModeIsActive()) {
             telemetry.update();
 
-            power_1 = gamepad1.left_stick_x + gamepad1.left_stick_y + gamepad2.left_stick_x;
-            power_2 = gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad2.left_stick_x;
-            power_3 = gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad2.left_stick_x;
-            power_4 = gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad2.left_stick_x;
+            power_1 = gamepad1.left_stick_x + gamepad1.left_stick_y - gamepad1.right_stick_x;
+            power_2 = gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x;
+            power_3 = gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x;
+            power_4 = gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x;
 
             if (power_1 > 1) power_1 = 1;
             if (power_2 > 1) power_2 = 1;

@@ -82,10 +82,10 @@ public class macanum_drive_simon extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            motor_power_1 = gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x;
-            motor_power_2 = gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x;
-            motor_power_3 = gamepad1.left_stick_y - gamepad1.right_stick_x - gamepad1.left_stick_x;
-            motor_power_4 = gamepad1.left_stick_y - gamepad1.right_stick_x + gamepad1.left_stick_x;
+            motor_power_1 = gamepad1.left_stick_x + gamepad1.left_stick_y + gamepad1.right_stick_x;
+            motor_power_2 = gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x;
+            motor_power_3 = gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x;
+            motor_power_4 = gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x;
 
             robot.DriveFL.setPower(motor_power_1);
             robot.DriveBL.setPower(motor_power_2);
